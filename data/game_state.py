@@ -1,6 +1,6 @@
 # TODO: make the dicts clean; add more helper functions to manipulate them
 
-from data.classes import *
+from classes import *
 
 game_rules = {
     "map-size": (39, 40),

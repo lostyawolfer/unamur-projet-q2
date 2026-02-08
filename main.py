@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 def get_raw_board_data():
     """ Get the initial raw board data from the .lon file.
     
@@ -43,3 +44,8 @@ def get_game_rules(raw_data):
 def update_visuals():
     """Syncs the rendered visuals in terminal with the saved game state."""
     ...
+=======
+from data.game_state import get_all_creatures
+
+print(get_all_creatures())
+>>>>>>> Stashed changes

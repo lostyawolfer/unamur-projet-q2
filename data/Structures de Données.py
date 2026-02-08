@@ -1,13 +1,8 @@
 game_rules = {
     "map-size": (39, 40),
     "turns-to-win": 25,
-    "spawn": [(20, 3), (20, 38)],        # First tuple is the spawn of Player 1, second is Player 2
-    "spur": [
-        (20, 38),
-        (20, 39),
-        (21, 38),
-        (21, 39)
-    ]
+    "spawn": ((20, 3), (20, 38)),                        # First tuple = Spawn of Player 1, Second tuple = Spawn of Player 2.
+    "spur": ((20, 38), (20, 39), (21, 38), (21, 39))
 }
 
 creatures = {

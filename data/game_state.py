@@ -1,4 +1,4 @@
-from .classes import *
+from classes import *
 
 game_rules = {
     "map-size": (39, 40),

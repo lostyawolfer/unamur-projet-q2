@@ -3,23 +3,6 @@ healer = 'healer'
 mage = 'mage'
 rogue = 'rogue'
 
-def class_exists(cls: str) -> bool:
-    """
-    Validates the hero class name.
-
-    Parameters
-    ----------
-    cls: str - name of the class
-
-    Returns
-    -------
-    bool: True if class exists, False if it doesn't
-    """
-    class_list = (barbarian, healer, mage, rogue)
-    if not cls in class_list:
-        return False
-    return True
-
 stats = {
     barbarian: {
         'health': 10,
@@ -42,3 +25,20 @@ stats = {
         'abilities': ('reach', 'burst')
     }
 }
+
+def class_exists(hcls: str) -> bool:
+    """
+    Validates the hero class name.
+
+    Parameters
+    ----------
+    hcls: str - name of the class
+
+    Returns
+    -------
+    bool: True if class exists, False if it doesn't
+    """
+    class_list = (barbarian, healer, mage, rogue)
+    if not hcls in class_list:
+        return False
+    return True

@@ -4,7 +4,7 @@ def get_raw_board_data():
     Return:
     -------
     raw_data: Raw Data from the .lon file in the forme of []
-    
+
     Version:
     --------
     Romain Pezzutto (v.1 08/02/2026)
@@ -41,7 +41,7 @@ def get_data_structure(raw_data):
 
     Return:
     -------
-    gamerules: Data structure that countains informations about the game, e.g. map-size, turns-to-win, etc. (dict) 
+    gamerules: Data structure that countains informations about the game, e.g. map-size, turns-to-win, etc. (dict)
     creatures: Data structure that countains informations about the creatures, e.g. name, damage, etc. (dict)
 
     Version:
@@ -100,7 +100,3 @@ def update_visuals():
 
 raw_data = get_raw_board_data()
 game_rules, creatures = get_data_structure(raw_data)
-
-
-from data.game_state import get_all_creatures
-print(get_all_creatures())

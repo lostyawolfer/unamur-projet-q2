@@ -1,7 +1,7 @@
 game_rules = {
     "map-size": (39, 40),
     "turns-to-win": 25,
-    "spawn": [(20, 3), (20, 38)],
+    "spawn": [(20, 3), (20, 38)],        # First tuple is the spawn of Player 1, second is Player 2
     "spur": [
         (20, 38),
         (20, 39),
@@ -32,7 +32,9 @@ heroes = {
             "class": "mage",
             "position": [15, 10],
             "health": 10,
-            "damage": 3
+            "max_health":10,
+            "damage": 3,
+            "level":1
         },
         "hero-2": {
             ...

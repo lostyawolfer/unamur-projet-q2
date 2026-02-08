@@ -23,7 +23,6 @@ creatures = {
 heroes = {
     "player-1": {
         "hero-1": {
-            "name": "Gigachad",
             "class": "mage",
             "position": [15, 10],
             "health": 10,

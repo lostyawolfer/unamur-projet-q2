@@ -13,7 +13,7 @@ def class_exists(cls: str) -> bool:
 
     Returns
     -------
-    bool: True if class exists, False if doesn't
+    bool: True if class exists, False if it doesn't
     """
     class_list = (barbarian, healer, mage, rogue)
     if not cls in class_list:

@@ -100,3 +100,7 @@ def update_visuals():
 
 raw_data = get_raw_board_data()
 game_rules, creatures = get_data_structure(raw_data)
+
+
+from data.game_state import get_all_creatures
+print(get_all_creatures())

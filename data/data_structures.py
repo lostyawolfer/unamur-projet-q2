@@ -21,8 +21,8 @@ creatures = {
 }
 
 heroes = {
-    "player-1": {
-        "hero-1": {
+    "player_1": {
+        "hero_1": {
             "class": "mage",
             "position": [15, 10],
             "health": 10,
@@ -30,17 +30,14 @@ heroes = {
             "damage": 3,
             "level":1
         },
-        "hero-2": {
+        "hero_2": {
             ...
         },
-        "hero-3": ...,
-        "hero-4": ...
     },
 
-    "player-2": {
-        "hero-1": ...,
-        "hero-2": ...,
-        "hero-3": ...,
-        "hero-4": ...,
+    "player_2": {
+        "hero_1": {
+            ...
+        },
     }
 }

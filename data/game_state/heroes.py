@@ -102,7 +102,7 @@ def respawn(player: str, hero: str):
 def level_up(player: str, hero: str):
     heroes[player][hero]['level'] += 1
     heroes[player][hero]['max_health'] = floor(1.4 * heroes[player][hero]['max_health'])
-    heroes[player][hero]['damage'] *= floor(1.6 * heroes[player][hero]['damage'])
+    heroes[player][hero]['damage'] = floor(1.6 * heroes[player][hero]['damage'])
 
 
 @_player_exists

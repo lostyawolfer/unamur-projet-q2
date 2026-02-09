@@ -10,7 +10,7 @@ def get_raw_board_data():
     Romain Pezzutto (v.1 08/02/2026)
     """
 
-    f = open("data/board.lon", "r")
+    f = open("board.lon", "r")
     board_file = f.readlines()
     f.close()
 
@@ -65,7 +65,7 @@ def get_data_structure(raw_data):
         elif section_name == "spawn":
             spawn_1 = (int(section_data[0][0]), int(section_data[0][1]))
             spawn_2 = (int(section_data[1][0]), int(section_data[1][1]))
-            game_rules["spawn"] = (spawn_1, spawn_2)
+            game_rules["spawn"] = {"player_1": spawn_1, "player_2": spawn_2}
 
         elif section_name == "spur":
             spur = []
@@ -76,10 +76,10 @@ def get_data_structure(raw_data):
 
         else:
             for creature_data in section_data:
-                creatures[creature_data[0]] = {"position": (creature_data[1], creature_data[2]),
-                                               "health": creature_data[3],
-                                               "damage": creature_data[4],
-                                               "range": creature_data[5]}
+                creatures[creature_data[0]] = {"position": (int(creature_data[1]), int(creature_data[2])),
+                                               "health": int(creature_data[3]),
+                                               "damage": int(creature_data[4]),
+                                               "range": int(creature_data[5])}
 
     return game_rules, creatures
 

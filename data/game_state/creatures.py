@@ -1,5 +1,7 @@
+# TODO: make docs
+
 """
-!! DATA STRUCTURE !!
+|| DATA STRUCTURE ||
 --------------------
 creatures = {
     "**creature name**": {
@@ -15,17 +17,10 @@ creatures = {
 creatures = {}
 
 
-def get_all_creatures() -> list[str]:
-    creature_list = []
-    for creature in creatures:
-        creature_list.append(creature)
-    return creature_list
-
-
-def create_creature(name: str, position: tuple[int, int], health: int, damage: int, attack_range: int):
+def create(name: str, pos: tuple[int, int], health: int, damage: int, attack_range: int):
     if name in creatures: raise ValueError('such creature already exists')
     new_creature = {
-        "position": position,
+        "position": pos,
         "health": health,
         "damage": damage,
         "range": attack_range
@@ -33,10 +28,9 @@ def create_creature(name: str, position: tuple[int, int], health: int, damage: i
     creatures[name] = new_creature
 
 
-
 import inspect
 from functools import wraps
-def _creature_exists(func):
+def _exists(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         sig = inspect.signature(func)
@@ -47,25 +41,57 @@ def _creature_exists(func):
     return wrapper
 
 
-@_creature_exists
-def _kill_creature(name: str):
+
+
+# --------------------
+# GETTERS
+# --------------------
+
+
+def get_all_creatures() -> list[str]:
+    creature_list = []
+    for creature in creatures:
+        creature_list.append(creature)
+    return creature_list
+
+
+@_exists
+def get_health(name: str) -> int:
+    return creatures[name]["health"]
+
+
+@_exists
+def get_pos(name: str) -> tuple[int, int]:
+    return creatures[name]["position"]
+
+
+@_exists
+def get_damage(name: str) -> tuple[int, int]:
+    return creatures[name]["damage"]
+
+
+@_exists
+def get_range(name: str) -> tuple[int, int]:
+    return creatures[name]["damage"]
+
+
+
+
+# --------------------
+# MANIPULATORS
+# --------------------
+
+
+@_exists
+def _die(name: str):
     creatures.pop(name)
 
 
-@_creature_exists
-def get_creature_health(name: str) -> int:
+@_exists
+def hurt(name: str, amount: int) -> int | None:
+    if amount < 0: raise ValueError('cannot inflict negative damage')
+    new_health = max(0, creatures[name]['health'] - amount)
+    creatures[name]['health'] = new_health
+    if new_health <= 0:
+        _die(name)
     return creatures[name]["health"]
-
-
-@_creature_exists
-def update_creature_health(name: str, update: int) -> int | None:
-    creatures[name]["health"] += update
-    if get_creature_health(name) <= 0:
-        _kill_creature(name)
-        return None
-    return creatures[name]["health"]
-
-
-@_creature_exists
-def get_creature_pos(name: str) -> tuple[int, int]:
-    return creatures[name]["position"]

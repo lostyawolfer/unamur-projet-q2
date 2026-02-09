@@ -42,3 +42,7 @@ def class_exists(hcls: str) -> bool:
     if not hcls in class_list:
         return False
     return True
+
+
+def get_abilities(hcls: str):
+    return stats[hcls]['abilities']

@@ -51,12 +51,12 @@ def get_pos(name: str) -> tuple[int, int]:
     return creatures[name]["position"]
 
 
-def get_damage(name: str) -> tuple[int, int]:
+def get_damage(name: str) -> int:
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["damage"]
 
 
-def get_range(name: str) -> tuple[int, int]:
+def get_range(name: str) -> int:
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["damage"]
 
@@ -72,7 +72,7 @@ def _die(name: str):
     creatures.pop(name)
 
 
-def hurt(name: str, amount: int) -> int | None:
+def hurt(name: str, amount: int) -> int:
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     if amount < 0: raise ValueError('cannot inflict negative damage')
     new_health = max(0, creatures[name]['health'] - amount)

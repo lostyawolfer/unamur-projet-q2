@@ -28,15 +28,15 @@ stats = {
 
 def class_exists(hcls: str) -> bool:
     """
-    Validates the hero class name.
+    Validates the existence of given hero class name.
 
     Parameters
     ----------
-    hcls: str - name of the class
+    hcls: str - name of the hero class
 
     Returns
     -------
-    bool: True if class exists, False if it doesn't
+    bool - True if class exists, False if it doesn't
     """
     class_list = (barbarian, healer, mage, rogue)
     if not hcls in class_list:
@@ -44,5 +44,21 @@ def class_exists(hcls: str) -> bool:
     return True
 
 
-def get_abilities(hcls: str):
+def get_abilities(hcls: str) -> tuple[str, str]:
+    """
+    Gets the ability list of a given haro class.
+
+    Parameters
+    ----------
+    hcls: str - name of the hero class
+
+    Returns
+    -------
+    tuple -
+
+    Raises
+    ------
+    ValueError: class doesn't exist - if hcls is an invalid hero class
+    """
+    if not class_exists(hcls): raise ValueError(f"class {hcls} doesn't exist")
     return stats[hcls]['abilities']

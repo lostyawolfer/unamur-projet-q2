@@ -1,5 +1,3 @@
-# TODO: make docs
-
 """
 || DATA STRUCTURE ||
 --------------------
@@ -13,12 +11,30 @@ creatures = {
     ... (for all creatures)
 }
 """
+from data.game_state import is_legal_position
 
 creatures = {}
 
 
 def create(name: str, pos: tuple[int, int], health: int, damage: int, attack_range: int):
+    """
+    Creates a new creature with specified data.
+
+    Parameters
+    ----------
+    name: str - name of the new creature (must be unique)
+    pos: tuple[int, int] - initial position
+    health: int - initial health
+    damage: int - initial melee damage
+    attack_range: int - initial attack range
+
+    Raises
+    ------
+    ValueError: such creature already exists - if creature name is already used
+    ValueError: position is outside the map - if parameter pos used illegal coordinates
+    """
     if name in creatures: raise ValueError('such creature already exists')
+    if not is_legal_position(pos): raise ValueError(f'position {pos} is outside the map')
     new_creature = {
         "position": pos,
         "health": health,
@@ -35,6 +51,13 @@ def create(name: str, pos: tuple[int, int], health: int, damage: int, attack_ran
 
 
 def get_all_creatures() -> list[str]:
+    """
+    Gets a list of all existing creatures.
+
+    Returns
+    -------
+    list[str] - list of all existing creature names
+    """
     creature_list = []
     for creature in creatures:
         creature_list.append(creature)
@@ -42,23 +65,83 @@ def get_all_creatures() -> list[str]:
 
 
 def get_health(name: str) -> int:
+    """
+    Gets the current health of the specified creature.
+
+    Parameters
+    ----------
+    name: str - name of the creature
+
+    Returns
+    -------
+    int - current health of specified creature
+
+    Raises
+    ------
+    ValueError: creature doesn't exist - if the creature name is invalid
+    """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["health"]
 
 
 def get_pos(name: str) -> tuple[int, int]:
+    """
+    Gets the current position of the specified creature.
+
+    Parameters
+    ----------
+    name: str - name of the creature
+
+    Returns
+    -------
+    tuple[int, int] - current position of specified creature
+
+    Raises
+    ------
+    ValueError: creature doesn't exist - if the creature name is invalid
+    """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["position"]
 
 
 def get_damage(name: str) -> int:
+    """
+    Gets the melee damage stat of the specified creature.
+
+    Parameters
+    ----------
+    name: str - name of the creature
+
+    Returns
+    -------
+    int - the melee damage stat of the specified creature
+
+    Raises
+    ------
+    ValueError: creature doesn't exist - if the creature name is invalid
+    """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["damage"]
 
 
 def get_range(name: str) -> int:
+    """
+    Gets the attack range of the specified creature.
+
+    Parameters
+    ----------
+    name: str - name of the creature
+
+    Returns
+    -------
+    int - attack range of specified creature
+
+    Raises
+    ------
+    ValueError: creature doesn't exist - if the creature name is invalid
+    """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
-    return creatures[name]["damage"]
+    return creatures[name]["range"]
 
 
 
@@ -69,10 +152,38 @@ def get_range(name: str) -> int:
 
 
 def _die(name: str):
+    """
+    INTERNAL FUNCTION THAT ISN'T SUPPOSED TO BE IMPORTED ANYWHERE,
+    AND IS INSTEAD ONLY USED IN THIS FILE.
+
+    Processes the creature's death, if upon hurting it its health becomes 0.
+    Currently, only deletes its data from the creatures dictionary.
+
+    !!! Might not be needed or become an importable function
+    !!! in the future, since it's supposed to only be cleaned up
+    !!! in a different phase after damage is inflicted, not immediately.
+    """
     creatures.pop(name)
 
 
 def hurt(name: str, amount: int) -> int:
+    """
+    Damages the creature by a specified amount.
+
+    Parameters
+    ----------
+    name: str - name of the creature
+    amount: int - the amount of damage to deal to named creature (must be positive or 0)
+
+    Returns
+    -------
+    int - new health of the creature after it took damage
+
+    Raises
+    ------
+    ValueError: creature doesn't exist - if the creature name is invalid
+    ValueError: cannot inflict negative damage - if amount is negative
+    """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     if amount < 0: raise ValueError('cannot inflict negative damage')
     new_health = max(0, creatures[name]['health'] - amount)

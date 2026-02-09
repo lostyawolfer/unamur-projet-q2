@@ -28,20 +28,6 @@ def create(name: str, pos: tuple[int, int], health: int, damage: int, attack_ran
     creatures[name] = new_creature
 
 
-import inspect
-from functools import wraps
-def _exists(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        sig = inspect.signature(func)
-        bound_args = sig.bind(*args, **kwargs)
-        name = bound_args.arguments.get("name")
-        if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
-        return func(*args, **kwargs)
-    return wrapper
-
-
-
 
 # --------------------
 # GETTERS
@@ -55,23 +41,23 @@ def get_all_creatures() -> list[str]:
     return creature_list
 
 
-@_exists
 def get_health(name: str) -> int:
+    if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["health"]
 
 
-@_exists
 def get_pos(name: str) -> tuple[int, int]:
+    if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["position"]
 
 
-@_exists
 def get_damage(name: str) -> tuple[int, int]:
+    if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["damage"]
 
 
-@_exists
 def get_range(name: str) -> tuple[int, int]:
+    if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["damage"]
 
 
@@ -82,13 +68,12 @@ def get_range(name: str) -> tuple[int, int]:
 # --------------------
 
 
-@_exists
 def _die(name: str):
     creatures.pop(name)
 
 
-@_exists
 def hurt(name: str, amount: int) -> int | None:
+    if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     if amount < 0: raise ValueError('cannot inflict negative damage')
     new_health = max(0, creatures[name]['health'] - amount)
     creatures[name]['health'] = new_health

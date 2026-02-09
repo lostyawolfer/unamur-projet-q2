@@ -67,20 +67,6 @@ def create(player: str, name: str, hcls: str):
     heroes[player][name] = new_hero
 
 
-import inspect
-from functools import wraps
-def _exists(func):
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        sig = inspect.signature(func)
-        bound_args = sig.bind(*args, **kwargs)
-        hero = bound_args.arguments.get("hero")
-        player = bound_args.arguments.get("player")
-        if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
-        return func(*args, **kwargs)
-    return wrapper
-
-
 
 
 # --------------------
@@ -88,38 +74,38 @@ def _exists(func):
 # --------------------
 
 
-@_exists
 def get_class(player: str, hero: str) -> str:
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     return heroes[player][hero]['class']
 
 
-@_exists
 def get_level(player: str, hero: str) -> str:
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     return heroes[player][hero]['level']
 
 
-@_exists
 def get_health(player: str, hero: str) -> int:
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     return heroes[player][hero]['health']
 
 
-@_exists
 def get_max_health(player: str, hero: str) -> int:
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     return heroes[player][hero]['max_health']
 
 
-@_exists
 def get_damage(player: str, hero: str) -> int:
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     return heroes[player][hero]['damage']
 
 
-@_exists
 def get_pos(player: str, hero: str) -> tuple[int, int]:
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     return heroes[player][hero]['pos']
 
 
-@_exists
 def get_owned_abilities(player: str, hero: str) -> tuple:
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     hcls = get_class(player, hero)
     hlvl = get_level(player, hero)
     hcls_abilities = hcls_get_ab(hcls)
@@ -138,41 +124,40 @@ def get_owned_abilities(player: str, hero: str) -> tuple:
 # --------------------
 
 
-@_exists
 def _move(player: str, hero: str, pos: tuple[int, int]):
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     if not is_legal_position(pos): raise ValueError(f'new position for {hero} is outside the map')
     heroes[player][hero]['position'] = pos
 
 
-@_exists
 def relative_move(player: str, hero: str, *, x: int = 0, y: int = 0) -> tuple[int, int]:
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     current_pos = heroes[player][hero]['position']
     new_pos = (current_pos[0] + x, current_pos[1] + y)
     _move(player, hero, new_pos)
     return new_pos
 
 
-@_exists
 def level_up(player: str, hero: str):
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     heroes[player][hero]['level'] += 1
     heroes[player][hero]['max_health'] = floor(1.4 * heroes[player][hero]['max_health'])
     heroes[player][hero]['damage'] = floor(1.6 * heroes[player][hero]['damage'])
 
 
-@_exists
 def respawn(player: str, hero: str):
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     spawn_pos = game_rules['spawn'][player]
     heroes[player][hero]['position'] = spawn_pos
     heroes[player][hero]['health'] = heroes[player][hero]['max_health']
 
 
-@_exists
 def _die(player: str, hero: str):
     ...
 
 
-@_exists
 def hurt(player: str, hero: str, amount: int) -> int:
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     if amount < 0: raise ValueError('cannot inflict negative damage')
     new_health = max(0, heroes[player][hero]['health'] - amount)
     heroes[player][hero]['health'] = new_health
@@ -181,8 +166,8 @@ def hurt(player: str, hero: str, amount: int) -> int:
     return new_health
 
 
-@_exists
 def heal(player: str, hero: str, amount: int) -> int:
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
     if amount < 0: raise ValueError('cannot inflict negative healing')
     max_health = heroes[player][hero]['max_health']
     new_health = min(heroes[player][hero]['health'] + amount, max_health)

@@ -28,17 +28,35 @@ def get_commande_separed (orders : str) -> list:
 
 # On a donc une liste comme ceci: [['albert', '*32-4'], ['denver', '@34-4'], ['daniel', 'energise']]
 
+actions = { "shifting" : [] , "attack" : [] , "special_attack" : []}
+
 def get_in_details_order (order : list):
     """
-    Create a dictionnary witch contain the details of order
+    Add in action dictionnary the order
     
     Parameters:
-    order(list): One order's list, the first element is hero's name or creature's name and the second is the action
-
-    Return:
-    -------
-    dict: Return the name associated with a dictionnary witch contain action's type and if it's necessary coordinate
+    orders(list): order is a list, the first element is hero's name or creature's name and the second is the action
     """
+    # dico sous cette forme: action: { shifting : [ (name , (x , y)) , (name , (x , y)) ....] , attack : [(name , (x , y)) , (name , (x , y)) .... ] , special_attack : [(name , type) , (name , type) ....]}
+    
+
+
+
+def execute_order (order : dict): 
+    """
+    Execute the order
+
+    Parameters:
+    order (dict): One order like this: name_chara : {"action" : type , "target" : (x : y)}
+
+    PS: Use tree other function: shifting, attack, special attack
+    """
+
+
+
+
+
+
 
     
 

@@ -62,9 +62,8 @@ def create(player: str, name: str, hcls: str):
     for pl in heroes:
         if name in heroes[pl]:
             raise ValueError(f'hero with this name already exists')
-    for char in name:
-        if not char.isalpha(): raise ValueError("hero names can only contain letters")
-        if not char.islower(): raise ValueError("hero names are only lowercase")
+    if not name.isalpha(): raise ValueError("hero names can only contain letters")
+    if not name.islower(): raise ValueError("hero names are only lowercase")
     if not class_exists(hcls): raise ValueError(f"class {hcls} doesn't exist")
 
     spawn_pos = game_rules['spawn'][player]

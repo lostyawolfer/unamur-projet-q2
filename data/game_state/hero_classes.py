@@ -54,7 +54,7 @@ def get_abilities(hcls: str) -> tuple[str, str]:
 
     Returns
     -------
-    tuple -
+    tuple[str, str] - full list of abilities for the class
 
     Raises
     ------

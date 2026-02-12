@@ -11,7 +11,8 @@ creatures = {
     ... (for all creatures)
 }
 """
-from data.game_state import is_legal_position
+from .general import is_legal_position
+
 
 creatures = {}
 

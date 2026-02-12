@@ -35,10 +35,10 @@ def get_in_details_order (order : list):
     Add in action dictionnary the order
     
     Parameters:
-    orders(list): order is a list, the first element is hero's name or creature's name and the second is the action
+    order(list): order is a list, the first element is hero's name or creature's name and the second is the action
     """
     # dico sous cette forme: action: { shifting : [ (name , (x , y)) , (name , (x , y)) ....] , attack : [(name , (x , y)) , (name , (x , y)) .... ] , special_attack : [(name , type) , (name , type) ....]}
-    
+
 
 
 

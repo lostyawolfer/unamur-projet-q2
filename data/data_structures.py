@@ -33,11 +33,13 @@ heroes = {
         "hero_2": {
             ...
         },
+        "turns_on_goal" : 0
     },
 
     "player_2": {
         "hero_1": {
             ...
         },
+        "turns_on_goal" : 0
     }
 }

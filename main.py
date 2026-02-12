@@ -1,9 +1,11 @@
+import blessed
+
 def get_raw_board_data():
     """ Get the initial raw board data from the .lon file.
 
     Return:
     -------
-    raw_data: Raw Data from the .lon file in the forme of []
+    raw_data: Raw data retrieved from the .lon file. (list)
 
     Version:
     --------
@@ -32,8 +34,8 @@ def get_raw_board_data():
     return raw_data
 
 
-def get_data_structure(raw_data):
-    """ Transforms the raw data into more flexible data structures.
+def clean_raw_board_data(raw_data):
+    """ Transforms the raw board data into more flexible data structures.
     
     Parameters:
     -----------
@@ -91,12 +93,32 @@ def display_board():
     pass
 
 
-def update_visuals():
+def update_render():
     """ Updates the rendered visuals in the terminal with the saved game state.
     """
 
     pass
 
 
-raw_data = get_raw_board_data()
-game_rules, creatures = get_data_structure(raw_data)
+if __name__ == "__main__":
+
+    term = blessed.Terminal()
+
+    BACKGROUND_CELL_1 = term.on_color_rgb(0, 215, 0)(" ")
+    BACKGROUND_CELL_2 = term.on_color_rgb(215, 215, 215)(" ")
+
+    BARBARIAN_CELL = "♜"
+    HEALER_CELL = "♛"
+    MAGE_CELL = "♝"
+    ROGUE_CELL = "♞"
+
+    CREATURE_CELL = term.color_rgb(215, 0, 0)("♟")
+
+    SPUR_CELL_1 = term.on_color_rgb(120, 120, 120)(" ")
+    SPUR_CELL_2 = term.on_color_rgb(85, 85, 85)(" ")
+
+    # print(CREATURE_CELL)
+    # print(term.on_color_rgb(0, 215, 0)(CREATURE_CELL))
+
+    raw_data = get_raw_board_data()
+    game_rules, creatures = clean_raw_board_data(raw_data)

@@ -86,13 +86,44 @@ def create(player: str, name: str, hcls: str):
 # --------------------
 
 
-# TODO: make a function that deduces who owns a hero with an arbitrary name if one exists
-# TODO: make all functions not require player name (since all heroes names are unique in the entire game)
-#       ^ it can be specified though, if the player is known
-#       (because otherwise all these getter functions are low-key useless)
+def get_player(hero: str) -> str | None:
+    """
+    Gets the player who owns the specified hero.
+
+    Parameters
+    ----------
+    hero: str - name of the hero
+
+    Returns
+    -------
+    !! either
+    str - the player who owns the hero (either 'player_1' or 'player_2')
+    None - if there isn't a single player who owns that hero
+    """
+    for player in heroes:
+        if hero in heroes[player]:
+            return player
+    return None
 
 
-def get_class(player: str, hero: str) -> str:
+def _verify_hero(hero: str, player: str = None) -> str:
+    """
+    INTERNAL FUNCTION THAT ISN'T SUPPOSED TO BE IMPORTED ANYWHERE,
+    AND IS INSTEAD ONLY USED IN THIS FILE.
+
+    Makes sure the hero's player is specified correctly,
+    or gets the player that hero owns, while properly raising
+    errors if such player or hero doesn't exist.
+    """
+    if not player:
+        player = get_player(hero)
+        if not player: raise ValueError(f'hero {hero} doesn\'t exist')
+    if not player in heroes: raise ValueError(f'player {player} doesn\'t exist')
+    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't own a hero called {hero}")
+    return player
+
+
+def get_class(hero: str, player: str = None) -> str:
     """
     Gets the class of the specified hero.
 
@@ -109,11 +140,11 @@ def get_class(player: str, hero: str) -> str:
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     return heroes[player][hero]['class']
 
 
-def get_level(player: str, hero: str) -> int:
+def get_level(hero: str, player: str = None) -> int:
     """
     Gets the level of the specified hero.
 
@@ -130,11 +161,11 @@ def get_level(player: str, hero: str) -> int:
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     return heroes[player][hero]['level']
 
 
-def get_health(player: str, hero: str) -> int:
+def get_health(hero: str, player: str = None) -> int:
     """
     Gets the current health of the specified hero.
 
@@ -151,11 +182,11 @@ def get_health(player: str, hero: str) -> int:
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     return heroes[player][hero]['health']
 
 
-def get_max_health(player: str, hero: str) -> int:
+def get_max_health(hero: str, player: str = None) -> int:
     """
     Gets the max health of the specified hero.
 
@@ -172,11 +203,11 @@ def get_max_health(player: str, hero: str) -> int:
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     return heroes[player][hero]['max_health']
 
 
-def get_damage(player: str, hero: str) -> int:
+def get_damage(hero: str, player: str = None) -> int:
     """
     Gets the melee damage stat of the specified hero.
 
@@ -193,11 +224,11 @@ def get_damage(player: str, hero: str) -> int:
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     return heroes[player][hero]['damage']
 
 
-def get_pos(player: str, hero: str) -> tuple[int, int]:
+def get_pos(hero: str, player: str = None) -> tuple[int, int]:
     """
     Gets the current position of the specified hero.
 
@@ -214,11 +245,11 @@ def get_pos(player: str, hero: str) -> tuple[int, int]:
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     return heroes[player][hero]['position']
 
 
-def get_owned_abilities(player: str, hero: str) -> tuple:
+def get_owned_abilities(hero: str, player: str = None) -> tuple:
     """
     Gets the list of abilities available to use by the hero.
 
@@ -235,7 +266,7 @@ def get_owned_abilities(player: str, hero: str) -> tuple:
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     hcls = get_class(player, hero)
     hlvl = get_level(player, hero)
     hcls_abilities = hcls_get_ab(hcls)
@@ -254,11 +285,7 @@ def get_owned_abilities(player: str, hero: str) -> tuple:
 # --------------------
 
 
-# TODO: make _move a proper function, and create a new coordinate delta checker
-#       to help check "how much x and y has the player moved?"
-#       All of this is supposed to replace relative_move to make things easier
-
-def _move(player: str, hero: str, pos: tuple[int, int]):
+def move(hero: str, pos: tuple[int, int], player: str = None):
     """
     INTERNAL FUNCTION THAT ISN'T SUPPOSED TO BE IMPORTED ANYWHERE,
     AND IS INSTEAD ONLY USED IN THIS FILE.
@@ -266,40 +293,12 @@ def _move(player: str, hero: str, pos: tuple[int, int]):
     Moves the hero to the specified position.
     Raises if hero doesn't exist or if the new position is invalid.
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     if not is_legal_position(pos): raise ValueError(f'new position for {hero} is outside the map')
     heroes[player][hero]['position'] = pos
 
 
-def relative_move(player: str, hero: str, *, x: int = 0, y: int = 0) -> tuple[int, int]:
-    """
-    Moves the hero relatively to their absolute coordinates.
-
-    Parameters
-    ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
-    hero: str - name of the hero
-    *** KEYWORD-ONLY ARGUMENTS BELOW - they can only be specified with keywords (ex. x=3, y=-5; NOT 3, -5)
-    x: int = 0 - delta of movement between columns; use positive values to move right, and negative values to move left
-    y: int = 0 - delta of movement between rows; use positive values to move down, and negative values to move up
-
-    Returns
-    -------
-    tuple[int, int] - new absolute position of the hero
-
-    Raises
-    ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
-    ValueError: new position is outside the map - if new position after the relative movement is invalid
-    """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
-    current_pos = heroes[player][hero]['position']
-    new_pos = (current_pos[0] + x, current_pos[1] + y)
-    _move(player, hero, new_pos)
-    return new_pos
-
-
-def level_up(player: str, hero: str):
+def level_up(hero: str, player: str = None):
     """
     Levels up the hero.
     Leveling up upgrades your max health and melee damage,
@@ -314,13 +313,13 @@ def level_up(player: str, hero: str):
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     heroes[player][hero]['level'] += 1
     heroes[player][hero]['max_health'] = floor(1.4 * heroes[player][hero]['max_health'])
     heroes[player][hero]['damage'] = floor(1.6 * heroes[player][hero]['damage'])
 
 
-def respawn(player: str, hero: str):
+def respawn(hero: str, player: str = None):
     """
     Moves the hero back to their spawn spot, and resets their health.
     To be used for respawning a dead hero after death.
@@ -334,13 +333,13 @@ def respawn(player: str, hero: str):
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     spawn_pos = game_rules['spawn'][player]
     heroes[player][hero]['position'] = spawn_pos
     heroes[player][hero]['health'] = heroes[player][hero]['max_health']
 
 
-def _die(player: str, hero: str):
+def _die(hero: str, player: str = None):
     """
     INTERNAL FUNCTION THAT ISN'T SUPPOSED TO BE IMPORTED ANYWHERE,
     AND IS INSTEAD ONLY USED IN THIS FILE.
@@ -355,7 +354,7 @@ def _die(player: str, hero: str):
     ...
 
 
-def hurt(player: str, hero: str, amount: int) -> int:
+def hurt(hero: str, amount: int, player: str = None) -> int:
     """
     Damages the hero by a specified amount.
 
@@ -370,16 +369,16 @@ def hurt(player: str, hero: str, amount: int) -> int:
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     ValueError: cannot inflict negative damage - if amount is negative
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     if amount < 0: raise ValueError('cannot inflict negative damage')
     new_health = max(0, heroes[player][hero]['health'] - amount)
     heroes[player][hero]['health'] = new_health
     if new_health <= 0:
-        _die(player, hero)
+        _die(hero, player)
     return new_health
 
 
-def heal(player: str, hero: str, amount: int) -> int:
+def heal(hero: str, amount: int, player: str = None) -> int:
     """
     Heals the hero by a specified amount. Caps at the hero's max_health.
 
@@ -394,7 +393,7 @@ def heal(player: str, hero: str, amount: int) -> int:
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
     ValueError: cannot inflict negative healing - if amount is negative
     """
-    if hero not in heroes[player]: raise ValueError(f"player {player} doesn't have a hero called {hero}")
+    player = _verify_hero(hero, player)
     if amount < 0: raise ValueError('cannot inflict negative healing')
     max_health = heroes[player][hero]['max_health']
     new_health = min(heroes[player][hero]['health'] + amount, max_health)

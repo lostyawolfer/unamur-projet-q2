@@ -48,7 +48,7 @@ def clean_raw_board_data(raw_data):
 
     Version:
     --------
-    Romain Pezzutto (v.1 08/02/2026)
+    Romain PEZZUTTO (v.1 08/02/2026)
     """
 
     game_rules = {}
@@ -86,15 +86,48 @@ def clean_raw_board_data(raw_data):
     return game_rules, creatures
 
 
-def display_board():
+def display_board(game_rules, creatures, heroes):
     """ Displays the initial board.
+
+    Parameters:
+    -----------
+    gamerules: Data structure that countains informations about the game, e.g. map-size, turns-to-win, etc. (dict)
+    creatures: Data structure that countains informations about the creatures, e.g. name, damage, etc. (dict)
+    heroes: Data structure that countains informations about the heroes of the players, e.g. name, health, etc. (dict)
+
+    Version:
+    --------
+    Romain PEZZUTTO (v.1 15/02/2026)
     """
 
-    pass
+    print(term.home + term.clear)
+
+    background_1 = term.on_color_rgb(BACK_1[0], BACK_1[1], BACK_1[2])(" ")       # Can we use the unpacking operator? If yes, `BACK_1[0], BACK_1[1], BACK_1[2]` becomes `*BACK_1`.
+    background_2 = term.on_color_rgb(BACK_2[0], BACK_2[1], BACK_2[2])(" ")
+
+    for line in range(game_rules["map-size"][0]):
+        for column in range(game_rules["map-size"][1]):
+            if (line + column) % 2 == 0:
+                print(background_1, end="")
+            else:
+                print(background_2, end="")
+        print()
+
+    # Still Working on it.
+    # Reminder: print(term.on_color_rgb(0, 215, 0)(CREATURE_CELL))
 
 
-def update_render():
+def update_render(game_rules, creatures, heroes):
     """ Updates the rendered visuals in the terminal with the saved game state.
+
+    Parameters:
+    -----------
+    gamerules: Data structure that countains informations about the game, e.g. map-size, turns-to-win, etc. (dict)
+    creatures: Data structure that countains informations about the creatures, e.g. name, damage, etc. (dict)
+    heroes: Data structure that countains informations about the heroes of the players, e.g. name, health, etc. (dict)
+
+    Version:
+    --------
     """
 
     pass
@@ -104,21 +137,28 @@ if __name__ == "__main__":
 
     term = blessed.Terminal()
 
-    BACKGROUND_CELL_1 = term.on_color_rgb(0, 215, 0)(" ")
-    BACKGROUND_CELL_2 = term.on_color_rgb(215, 215, 215)(" ")
+    # =============== CUSTOMISATION ===============
+    
+    BACK_1 = (0, 215, 0)
+    BACK_2 = (215, 215, 215)
+    SPUR_1 = (120, 120, 120)
+    SPUR_2 = (85, 85, 85)
+    P1_COLOR = (0, 0, 255)
+    P2_COLOR = (150, 0, 215)
 
-    BARBARIAN_CELL = "♜"
-    HEALER_CELL = "♛"
-    MAGE_CELL = "♝"
-    ROGUE_CELL = "♞"
+    BARBARIAN_CHAR = "∞"
+    HEALER_CHAR = "∏"
+    MAGE_CHAR = "∑"
+    ROGUE_CHAR = "∂"
+    CREATURE_CHAR = term.color_rgb(215, 0, 0)("∫")
 
-    CREATURE_CELL = term.color_rgb(215, 0, 0)("♟")
-
-    SPUR_CELL_1 = term.on_color_rgb(120, 120, 120)(" ")
-    SPUR_CELL_2 = term.on_color_rgb(85, 85, 85)(" ")
-
-    # print(CREATURE_CELL)
-    # print(term.on_color_rgb(0, 215, 0)(CREATURE_CELL))
+    # =============================================
 
     raw_data = get_raw_board_data()
     game_rules, creatures = clean_raw_board_data(raw_data)
+
+    # FOR TESTING PURPOSES (to delete later):
+    heroes = {"player_1": {"Zet-Li":{"class":"healer", "position":[5, 5], "health":10, "max_health":10, "damage":3, "level":1}, "turns_on_goal":0},
+              "player_2": {"Nev":{"class":"mage", "position":[15, 15], "health":10, "max_health":10, "damage":3, "level":1}, "turns_on_goal":0}}
+
+    display_board(game_rules, creatures, heroes)

@@ -86,14 +86,12 @@ def clean_raw_board_data(raw_data):
     return game_rules, creatures
 
 
-def display_board(game_rules, creatures, heroes):
+def display_board(game_rules):
     """ Displays the initial board.
 
     Parameters:
     -----------
     gamerules: Data structure that countains informations about the game, e.g. map-size, turns-to-win, etc. (dict)
-    creatures: Data structure that countains informations about the creatures, e.g. name, damage, etc. (dict)
-    heroes: Data structure that countains informations about the heroes of the players, e.g. name, health, etc. (dict)
 
     Version:
     --------
@@ -113,16 +111,25 @@ def display_board(game_rules, creatures, heroes):
                 print(background_2, end="")
         print()
 
-    # Still Working on it.
-    # Reminder: print(term.on_color_rgb(0, 215, 0)(CREATURE_CELL))
+    for player in game_rules["spawn"]:
+        spawn = game_rules["spawn"][player]
+        print(term.move_xy(spawn[1]-1, spawn[0]) + term.on_color_rgb(SPAWN_COL[0], SPAWN_COL[1], SPAWN_COL[2])(" "))
+
+    for spur_point in game_rules["spur"]:
+        if (spur_point[0] + spur_point[1]) % 2 == 1:
+            print(term.move_xy(spur_point[1]-1, spur_point[0]) + term.on_color_rgb(SPUR_1[0], SPUR_1[1], SPUR_1[2])(" "))
+        else:
+            print(term.move_xy(spur_point[1]-1, spur_point[0]) + term.on_color_rgb(SPUR_2[0], SPUR_2[1], SPUR_2[2])(" "))
+    
+    map_size = game_rules["map-size"]
+    print(term.move_xy(map_size[1], map_size[0]))
 
 
-def update_render(game_rules, creatures, heroes):
+def update_render(creatures, heroes):
     """ Updates the rendered visuals in the terminal with the saved game state.
 
     Parameters:
     -----------
-    gamerules: Data structure that countains informations about the game, e.g. map-size, turns-to-win, etc. (dict)
     creatures: Data structure that countains informations about the creatures, e.g. name, damage, etc. (dict)
     heroes: Data structure that countains informations about the heroes of the players, e.g. name, health, etc. (dict)
 
@@ -145,6 +152,7 @@ if __name__ == "__main__":
     SPUR_2 = (85, 85, 85)
     P1_COLOR = (0, 0, 255)
     P2_COLOR = (150, 0, 215)
+    SPAWN_COL = (150, 0, 220)
 
     BARBARIAN_CHAR = "∞"
     HEALER_CHAR = "∏"
@@ -161,4 +169,5 @@ if __name__ == "__main__":
     heroes = {"player_1": {"Zet-Li":{"class":"healer", "position":[5, 5], "health":10, "max_health":10, "damage":3, "level":1}, "turns_on_goal":0},
               "player_2": {"Nev":{"class":"mage", "position":[15, 15], "health":10, "max_health":10, "damage":3, "level":1}, "turns_on_goal":0}}
 
-    display_board(game_rules, creatures, heroes)
+    display_board(game_rules)
+    update_render(creatures, heroes)

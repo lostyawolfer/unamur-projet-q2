@@ -18,7 +18,7 @@ heroes = {
     }
 }
 """
-from math import floor, ceil
+from math import ceil
 from .hero_classes import stats as hcls_stats, get_abilities as hcls_get_ab
 from .hero_classes import class_exists
 from .general import game_rules, is_legal_position

@@ -18,7 +18,7 @@ heroes = {
     }
 }
 """
-from math import floor
+from math import floor, ceil
 from .hero_classes import stats as hcls_stats, get_abilities as hcls_get_ab
 from .hero_classes import class_exists
 from .general import game_rules, is_legal_position
@@ -388,8 +388,8 @@ def level_up(hero: str, player: str = None):
     """
     player = _verify_hero(hero, player=player)
     heroes[player][hero]['level'] += 1
-    heroes[player][hero]['max_health'] = floor(1.4 * heroes[player][hero]['max_health'])
-    heroes[player][hero]['damage'] = floor(1.6 * heroes[player][hero]['damage'])
+    heroes[player][hero]['max_health'] = ceil(1.4 * heroes[player][hero]['max_health'])
+    heroes[player][hero]['damage'] = ceil(1.6 * heroes[player][hero]['damage'])
 
 
 def respawn(hero: str, player: str = None):

@@ -5,8 +5,8 @@ rogue = 'rogue'
 
 stats = {
     barbarian: {
-        'health': 10,
-        'damage': 3,
+        'health': 15,
+        'damage': 2,
         'abilities': ('energize', 'stun')
     },
     healer: {
@@ -21,7 +21,7 @@ stats = {
     },
     rogue: {
         'health': 10,
-        'damage': 2,
+        'damage': 3,
         'abilities': ('reach', 'burst')
     }
 }

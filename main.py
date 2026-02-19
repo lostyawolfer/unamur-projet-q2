@@ -86,11 +86,12 @@ def clean_raw_board_data(raw_data):
     return game_rules, creatures
 
 
-def display_board(game_rules):
+def display_board(creature, game_rules):
     """ Displays the initial board.
 
     Parameters:
     -----------
+    creatures: Data structure that countains informations about the creatures, e.g. name, damage, etc. (dict)
     gamerules: Data structure that countains informations about the game, e.g. map-size, turns-to-win, etc. (dict)
 
     Version:
@@ -98,43 +99,69 @@ def display_board(game_rules):
     Romain PEZZUTTO (v.1 15/02/2026)
     """
 
-    print(term.home + term.clear)
+    print(term.home + term.clear, end="")
 
-    background_1 = term.on_color_rgb(BACK_1[0], BACK_1[1], BACK_1[2])(" ")       # Can we use the unpacking operator? If yes, `BACK_1[0], BACK_1[1], BACK_1[2]` becomes `*BACK_1`.
-    background_2 = term.on_color_rgb(BACK_2[0], BACK_2[1], BACK_2[2])(" ")
-
+    # Empty map
     for line in range(game_rules["map-size"][0]):
         for column in range(game_rules["map-size"][1]):
             if (line + column) % 2 == 0:
-                print(background_1, end="")
+                print(term.on_color_rgb(BACK_1[0], BACK_1[1], BACK_1[2])(" "), end="")    # Can we use the unpacking operator? If yes, `BACK_1[0], BACK_1[1], BACK_1[2]` becomes `*BACK_1`.
             else:
-                print(background_2, end="")
+                print(term.on_color_rgb(BACK_2[0], BACK_2[1], BACK_2[2])(" "), end="")
         print()
 
+    # Spawnpoint
     for player in game_rules["spawn"]:
         spawn = game_rules["spawn"][player]
-        print(term.move_xy(spawn[1]-1, spawn[0]) + term.on_color_rgb(SPAWN_COL[0], SPAWN_COL[1], SPAWN_COL[2])(" "))
+        print(term.move_yx(spawn[0], spawn[1]) + term.on_color_rgb(SPAWN_COL[0], SPAWN_COL[1], SPAWN_COL[2])(" "))
 
-    for spur_point in game_rules["spur"]:
-        if (spur_point[0] + spur_point[1]) % 2 == 1:
-            print(term.move_xy(spur_point[1]-1, spur_point[0]) + term.on_color_rgb(SPUR_1[0], SPUR_1[1], SPUR_1[2])(" "))
+    # Spur
+    for spur in game_rules["spur"]:
+        if (spur[0] + spur[1]) % 2 == 0:
+            print(term.move_yx(spur[0], spur[1]) + term.on_color_rgb(SPUR_1[0], SPUR_1[1], SPUR_1[2])(" "))
         else:
-            print(term.move_xy(spur_point[1]-1, spur_point[0]) + term.on_color_rgb(SPUR_2[0], SPUR_2[1], SPUR_2[2])(" "))
+            print(term.move_yx(spur[0], spur[1]) + term.on_color_rgb(SPUR_2[0], SPUR_2[1], SPUR_2[2])(" "))
+
+    # Creatures
+    for creature in creatures:
+        pos = creatures[creature]["position"]
+        parity = True if (pos[0] + pos[1]) % 2 == 0 else False
+
+        # Creature on Spur or Nothing
+        if parity:
+            if pos in game_rules["spur"]:
+                print(term.move_yx(pos[0], pos[1]) + term.on_color_rgb(SPUR_1[0], SPUR_1[1], SPUR_1[2])(CREATURE_CHAR))
+            else:
+                print(term.move_yx(pos[0], pos[1]) + term.on_color_rgb(BACK_1[0], BACK_1[1], BACK_1[2])(CREATURE_CHAR))
+        else:
+            if pos in game_rules["spur"]:
+                print(term.move_yx(pos[0], pos[1]) + term.on_color_rgb(SPUR_2[0], SPUR_2[1], SPUR_2[2])(CREATURE_CHAR))
+            else:
+                print(term.move_yx(pos[0], pos[1]) + term.on_color_rgb(BACK_2[0], BACK_2[1], BACK_2[2])(CREATURE_CHAR))
+
+        # Creature on Spawnpoint
+        for player in game_rules["spawn"]:
+            if pos == game_rules["spawn"][player]:
+                print(term.move_yx(pos[0], pos[1]) + term.on_color_rgb(SPAWN_COL[0], SPAWN_COL[1], SPAWN_COL[2])(CREATURE_CHAR))
+
+    # Heroes health & effects
+    # ...
     
+    # Relocate cursor below
     map_size = game_rules["map-size"]
-    print(term.move_xy(map_size[1], map_size[0]))
+    print(term.move_y(map_size[0]))      # TO DO: Add lines to compensate "Heroes health & effects"
 
 
-def update_render(creatures, heroes):
+def update_render(heroes):
     """ Updates the rendered visuals in the terminal with the saved game state.
 
     Parameters:
     -----------
-    creatures: Data structure that countains informations about the creatures, e.g. name, damage, etc. (dict)
     heroes: Data structure that countains informations about the heroes of the players, e.g. name, health, etc. (dict)
 
     Version:
     --------
+    Romain PEZZUTTO (v.1 15/02/2026)
     """
 
     pass
@@ -148,8 +175,8 @@ if __name__ == "__main__":
     
     BACK_1 = (0, 215, 0)
     BACK_2 = (215, 215, 215)
-    SPUR_1 = (120, 120, 120)
-    SPUR_2 = (85, 85, 85)
+    SPUR_1 = (85, 85, 85)
+    SPUR_2 = (120, 120, 120)
     P1_COLOR = (0, 0, 255)
     P2_COLOR = (150, 0, 215)
     SPAWN_COL = (150, 0, 220)
@@ -160,14 +187,18 @@ if __name__ == "__main__":
     ROGUE_CHAR = "∂"
     CREATURE_CHAR = term.color_rgb(215, 0, 0)("∫")
 
+    STUN_CHAR = "⚡"
+    IMMUNISE = "🛡️"
+    OVIBUS = "🚫"
+
     # =============================================
 
     raw_data = get_raw_board_data()
     game_rules, creatures = clean_raw_board_data(raw_data)
 
     # FOR TESTING PURPOSES (to delete later):
-    heroes = {"player_1": {"Zet-Li":{"class":"healer", "position":[5, 5], "health":10, "max_health":10, "damage":3, "level":1}, "turns_on_goal":0},
-              "player_2": {"Nev":{"class":"mage", "position":[15, 15], "health":10, "max_health":10, "damage":3, "level":1}, "turns_on_goal":0}}
+    heroes = {"player_1": {"Zet-Li":{"class":"healer", "prev_position": [8, 15], "position":[7, 15], "health":10, "max_health":10, "damage":3, "level":1}, "turns_on_goal":0},
+              "player_2": {"Nev":{"class":"mage", "prev_position": [8, 20], "position":[7, 20], "health":10, "max_health":10, "damage":3, "level":1}, "turns_on_goal":0}}
 
-    display_board(game_rules)
-    update_render(creatures, heroes)
+    display_board(creatures, game_rules)
+    update_render(heroes)

@@ -56,7 +56,10 @@ def create(player: str, name: str, hcls: str):
     ValueError: hero already exists - if a hero with the same name already exists in any of the players
     ValueError: hero names can only contain letters - if the name contains numbers, spaces or special characters
     ValueError: hero names are only lowercase - if the name contains uppercase letters
-    ValueError: class doesn't exist - if specified hero class is invalid
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     if len(heroes[player]) >= 4: raise ValueError(f'player {player} already has 4 or more heroes')
     for pl in heroes:
@@ -98,7 +101,10 @@ def get_player(hero: str) -> str | None:
     -------
     !! either
     str - the player who owns the hero (either 'player_1' or 'player_2')
-    None - if there isn't a single player who owns that hero
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     for player in heroes:
         if hero in heroes[player]:
@@ -113,7 +119,6 @@ def _verify_hero(hero: str, player: str = None) -> str:
 
     Makes sure the hero's player is specified correctly,
     or gets the player that hero owns, while properly raising
-    errors if such player or hero doesn't exist.
     """
     if not player:
         player = get_player(hero)
@@ -140,7 +145,10 @@ def get_class(hero: str, player: str = None) -> str:
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     return heroes[player][hero]['class']
@@ -163,7 +171,10 @@ def get_level(hero: str, player: str = None) -> int:
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     return heroes[player][hero]['level']
@@ -186,7 +197,10 @@ def get_health(hero: str, player: str = None) -> int:
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     return heroes[player][hero]['health']
@@ -209,7 +223,10 @@ def get_max_health(hero: str, player: str = None) -> int:
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     return heroes[player][hero]['max_health']
@@ -232,7 +249,10 @@ def get_damage(hero: str, player: str = None) -> int:
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     return heroes[player][hero]['damage']
@@ -255,7 +275,10 @@ def get_pos(hero: str, player: str = None) -> tuple[int, int]:
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     return heroes[player][hero]['position']
@@ -278,7 +301,10 @@ def get_owned_abilities(hero: str, player: str = None) -> tuple:
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     hcls = get_class(hero, player=player)
@@ -314,7 +340,10 @@ def move(hero: str, pos: tuple[int, int], player: str = None):
     Raises
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
-    ValueError: new position for hero is outside the map - if the new position is illegal
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     if not is_legal_position(pos): raise ValueError(f'new position for {hero} is outside the map')
@@ -336,7 +365,10 @@ def level_up(hero: str, player: str = None):
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     heroes[player][hero]['level'] += 1
@@ -358,7 +390,10 @@ def respawn(hero: str, player: str = None):
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     spawn_pos = game_rules['spawn'][player]
@@ -376,7 +411,6 @@ def _die(hero: str, player: str = None):
 
     !!! Might not be needed or become an importable function
     !!! in the future, since it's supposed to only be cleaned up
-    !!! in a different phase after damage is inflicted, not immediately.
     """
     ...
 
@@ -396,7 +430,10 @@ def hurt(hero: str, amount: int, player: str = None) -> int:
     Raises
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
-    ValueError: cannot inflict negative damage - if amount is negative
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     if amount < 0: raise ValueError('cannot inflict negative damage')
@@ -422,7 +459,10 @@ def heal(hero: str, amount: int, player: str = None) -> int:
     Raises
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
-    ValueError: cannot inflict negative healing - if amount is negative
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     if amount < 0: raise ValueError('cannot inflict negative healing')

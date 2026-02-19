@@ -28,7 +28,10 @@ def get_entities_at(pos: tuple[int, int]) -> dict:
 
     Raises
     ------
-    ValueError: pos is outside the map - when the specified position is invalid
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     if not is_legal_position(pos): raise ValueError(f'{pos} is outside the map')
     res = {

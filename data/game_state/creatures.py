@@ -32,10 +32,7 @@ def create(name: str, pos: tuple[int, int], health: int, damage: int, attack_ran
     Raises
     ------
     ValueError: such creature already exists - if creature name is already used
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    ValueError: position is outside the map - if parameter pos used illegal coordinates
     """
     if name in creatures: raise ValueError('such creature already exists')
     if not is_legal_position(pos): raise ValueError(f'position {pos} is outside the map')
@@ -60,10 +57,7 @@ def get_all_creatures() -> list[str]:
 
     Returns
     -------
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    list[str] - list of all existing creature names
     """
     creature_list = []
     for creature in creatures:
@@ -85,10 +79,7 @@ def get_health(name: str) -> int:
 
     Raises
     ------
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    ValueError: creature doesn't exist - if the creature name is invalid
     """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["health"]
@@ -108,10 +99,7 @@ def get_pos(name: str) -> tuple[int, int]:
 
     Raises
     ------
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    ValueError: creature doesn't exist - if the creature name is invalid
     """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["position"]
@@ -131,10 +119,7 @@ def get_damage(name: str) -> int:
 
     Raises
     ------
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    ValueError: creature doesn't exist - if the creature name is invalid
     """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["damage"]
@@ -154,10 +139,7 @@ def get_range(name: str) -> int:
 
     Raises
     ------
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    ValueError: creature doesn't exist - if the creature name is invalid
     """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["range"]
@@ -180,10 +162,7 @@ def _die(name: str):
 
     !!! Might not be needed or become an importable function
     !!! in the future, since it's supposed to only be cleaned up
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    !!! in a different phase after damage is inflicted, not immediately.
     """
     creatures.pop(name)
 
@@ -204,10 +183,7 @@ def hurt(name: str, amount: int) -> int:
     Raises
     ------
     ValueError: creature doesn't exist - if the creature name is invalid
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    ValueError: cannot inflict negative damage - if amount is negative
     """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     if amount < 0: raise ValueError('cannot inflict negative damage')

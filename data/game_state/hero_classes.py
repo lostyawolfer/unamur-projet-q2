@@ -36,10 +36,7 @@ def class_exists(hcls: str) -> bool:
 
     Returns
     -------
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    bool - True if class exists, False if it doesn't
     """
     class_list = (barbarian, healer, mage, rogue)
     if not hcls in class_list:
@@ -61,10 +58,7 @@ def get_abilities(hcls: str) -> tuple[str, str]:
 
     Raises
     ------
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    ValueError: class doesn't exist - if hcls is an invalid hero class
     """
     if not class_exists(hcls): raise ValueError(f"class {hcls} doesn't exist")
     return stats[hcls]['abilities']

@@ -50,7 +50,21 @@ def get_in_dict_orders (orders : list) -> dict:
     --------
     Lisette DEVILLERS (v.1 14/02/2026)
     """
-    
+    "heros" = []
+    for order in orders :
+        if not order [0] in "heros":
+            if order [1] [0] == "*" :
+                coord = order[1].split("-")
+                actions ["shifting"] += ( order[0] , (coord[0] , coord[1]))
+            elif order [1] [0] == "@":
+                coord = order[1].split("-")
+                actions ["attack"] += ( order[0] , (coord[0] , coord[1]))
+            elif order [1] in "pouvoir":
+                if 
+            "heros" += order [0]
+
+
+
 
     # dico sous cette forme: action: { shifting : [ (name , (x , y)) , (name , (x , y)) ....] , attack : [(name , (x , y)) , (name , (x , y)) .... ] , special_attack : [(name , type) , (name , type) ....]}
 

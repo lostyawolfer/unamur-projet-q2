@@ -28,7 +28,7 @@ def get_entities_at(pos: tuple[int, int]) -> dict:
 
     Raises
     ------
-    ValueError: pos is outside the map - when the specified position is not valid
+    ValueError: pos is outside the map - when the specified position is invalid
     """
     if not is_legal_position(pos): raise ValueError(f'{pos} is outside the map')
     res = {

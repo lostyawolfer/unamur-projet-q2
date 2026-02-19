@@ -129,8 +129,10 @@ def get_class(hero: str, player: str = None) -> str:
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Returns
     -------
@@ -150,8 +152,10 @@ def get_level(hero: str, player: str = None) -> int:
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Returns
     -------
@@ -171,8 +175,10 @@ def get_health(hero: str, player: str = None) -> int:
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Returns
     -------
@@ -192,8 +198,10 @@ def get_max_health(hero: str, player: str = None) -> int:
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Returns
     -------
@@ -213,8 +221,10 @@ def get_damage(hero: str, player: str = None) -> int:
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Returns
     -------
@@ -234,8 +244,10 @@ def get_pos(hero: str, player: str = None) -> tuple[int, int]:
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Returns
     -------
@@ -255,8 +267,10 @@ def get_owned_abilities(hero: str, player: str = None) -> tuple:
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Returns
     -------
@@ -287,11 +301,20 @@ def get_owned_abilities(hero: str, player: str = None) -> tuple:
 
 def move(hero: str, pos: tuple[int, int], player: str = None):
     """
-    INTERNAL FUNCTION THAT ISN'T SUPPOSED TO BE IMPORTED ANYWHERE,
-    AND IS INSTEAD ONLY USED IN THIS FILE.
-
     Moves the hero to the specified position.
-    Raises if hero doesn't exist or if the new position is invalid.
+
+    Parameters
+    ----------
+    hero: str - name of the hero
+    pos: tuple[int, int] - the new position
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
+
+    Raises
+    ------
+    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+    ValueError: new position for hero is outside the map - if the new position is illegal
     """
     player = _verify_hero(hero, player=player)
     if not is_legal_position(pos): raise ValueError(f'new position for {hero} is outside the map')
@@ -306,8 +329,10 @@ def level_up(hero: str, player: str = None):
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Raises
     ------
@@ -326,8 +351,10 @@ def respawn(hero: str, player: str = None):
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Raises
     ------
@@ -360,9 +387,11 @@ def hurt(hero: str, amount: int, player: str = None) -> int:
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
     amount: int - the amount of damage to deal to the named hero (must be positive or 0)
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Raises
     ------
@@ -384,9 +413,11 @@ def heal(hero: str, amount: int, player: str = None) -> int:
 
     Parameters
     ----------
-    player: str - name of the player that owns the hero (either 'player_1' or 'player_2')
     hero: str - name of the hero
     amount: int - the amount of healing to do to the named hero (must be positive or 0)
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
 
     Raises
     ------

@@ -84,6 +84,8 @@ def create(player: str, name: str, hcls: str):
     new_hero['health'] = new_hero['max_health']
     new_hero['damage'] = hcls_stats[hcls]['damage']
     new_hero['position'] = spawn_pos
+    new_hero['turns_on_spur'] = 0
+    new_hero['effects'] = []
 
     heroes[player][name] = new_hero
 

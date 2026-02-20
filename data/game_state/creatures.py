@@ -57,24 +57,6 @@ def create(name: str, pos: tuple[int, int], health: int, damage: int, attack_ran
 # --------------------
 
 
-def get_all_creatures() -> list[str]:
-    """
-    Gets a list of all existing creatures.
-
-    Returns
-    -------
-    list[str] - list of all existing creature names
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
-    """
-    creature_list = []
-    for creature in creatures:
-        creature_list.append(creature)
-    return creature_list
-
-
 def get_health(name: str) -> int:
     """
     Gets the current health of the specified creature.
@@ -249,3 +231,44 @@ def hurt(name: str, amount: int) -> int:
     if new_health <= 0:
         _die(name)
     return creatures[name]["health"]
+
+def apply_effect(name: str, effect_name: str) -> list[str]:
+    """
+    Adds the specified effect to the effect list of the creature.
+
+    Parameters
+    ----------
+    name: str - name of the creature
+    effect_name: str - name of the effect to apply
+
+    Raises
+    ------
+    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    """
+    if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
+    creatures[name]['effects'] += effect_name
+    return creatures[name]['effects']
+
+
+def reset_effects(name: str):
+    """
+    Resets the effect list of the creature.
+
+    Parameters
+    ----------
+    name: str - name of the creature
+
+    Raises
+    ------
+    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    """
+    if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
+    creatures[name]['effects'] = []

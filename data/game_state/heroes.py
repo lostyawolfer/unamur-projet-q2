@@ -278,6 +278,33 @@ def get_damage(hero: str, player: str = None) -> int:
     return heroes[player][hero]['damage']
 
 
+def get_turns_on_spur(hero: str, player: str = None) -> int:
+    """
+    Gets the turns on spur stat of the hero.
+
+    Parameters
+    ----------
+    hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
+
+    Returns
+    -------
+    int - the amount of turns the hero spent on the spur zone
+
+    Raises
+    ------
+    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    """
+    player = _verify_hero(hero, player=player)
+    return heroes[player][hero]['turns_on_spur']
+
+
 def get_pos(hero: str, player: str = None) -> tuple[int, int]:
     """
     Gets the current position of the specified hero.

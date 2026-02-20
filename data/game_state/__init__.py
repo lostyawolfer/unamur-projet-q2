@@ -57,8 +57,3 @@ def get_entities_at(pos: tuple[int, int]) -> dict:
 
 def get_all_entity_positions() -> dict:
     ...
-
-
-def update_visuals():
-    """Syncs the rendered visuals in terminal with the saved game state."""
-    ...

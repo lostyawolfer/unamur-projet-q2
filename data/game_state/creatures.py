@@ -6,7 +6,8 @@ creatures = {
         "position": (**int, X**, **int, Y**)
         "health": **int, health**,
         "damage": **int, physical damage**,
-        "range": **int, creature's range**
+        "range": **int, creature's range**,
+        "effects" **list[str]**
     },
     ... (for all creatures)
 }
@@ -44,7 +45,8 @@ def create(name: str, pos: tuple[int, int], health: int, damage: int, attack_ran
         "position": pos,
         "health": health,
         "damage": damage,
-        "range": attack_range
+        "range": attack_range,
+        "effects": []
     }
     creatures[name] = new_creature
 
@@ -168,6 +170,29 @@ def get_range(name: str) -> int:
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     return creatures[name]["range"]
 
+
+def get_effects(name: str) -> list[str]:
+    """
+    Gets the list of effects currently affecting the creature.
+
+    Parameters
+    ----------
+    name: str - name of the creature
+
+    Returns
+    -------
+    list[str] - list of all effects affecting the creature
+
+    Raises
+    ------
+    ValueError: creature doesn't exist - if the creature name is invalid
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    """
+    if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
+    return creatures[name]['effects']
 
 
 

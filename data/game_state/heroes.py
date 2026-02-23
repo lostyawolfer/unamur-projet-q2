@@ -22,16 +22,12 @@ heroes = {
 """
 # TODO: figure out ability cooldowns
 
+
 from math import ceil
 from .hero_classes import stats as hcls_stats, get_abilities as hcls_get_ab
 from .hero_classes import class_exists
-from .general import game_rules, is_legal_position
-
-
-heroes = {
-    'player_1': {},
-    'player_2': {}
-}
+from .general import is_legal_position
+from .data import game_rules, heroes
 
 
 def _get_hero_template():
@@ -560,9 +556,7 @@ def remove_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
     effects = heroes[player][hero]['effects']
     if effect_name not in effects: raise ValueError(f"hero {hero} doesn't have {effect_name}")
 
-    for effect, i in effects, range(len(effects)):
-        if effect == effect_name:
-            del heroes[player][hero]['effects'][i]
+    heroes[player][hero]['effects'] = [eff for eff in effects if eff != effect_name]
     return heroes[player][hero]['effects']
 
 
@@ -591,12 +585,12 @@ def reset_effects(hero: str, player: str = None):
 
 def increment_turns_on_spur(hero: str, player: str = None) -> int:
     # TODO: write specs
-    _verify_hero(hero, player=player)
+    player = _verify_hero(hero, player=player)
     heroes[player][hero]['turns_on_spur'] += 1
     return get_turns_on_spur(hero, player=player)
 
 
 def reset_turns_on_spur(hero: str, player: str = None):
     # TODO: write specs
-    _verify_hero(hero, player=player)
+    player = _verify_hero(hero, player=player)
     heroes[player][hero]['turns_on_spur'] = 0

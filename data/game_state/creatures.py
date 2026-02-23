@@ -12,10 +12,10 @@ creatures = {
     ... (for all creatures)
 }
 """
+
+
 from .general import is_legal_position
-
-
-creatures = {}
+from .data import creatures
 
 
 def create(name: str, pos: tuple[int, int], health: int, damage: int, attack_range: int):
@@ -243,9 +243,7 @@ def remove_effect(name: str, effect_name: str) -> list[str]:
     effects = creatures[name]['effects']
     if effect_name not in effects: raise ValueError(f"creature {name} doesn't have {effect_name}")
 
-    for effect, i in effects, range(len(effects)):
-        if effect == effect_name:
-            del creatures[name]['effects'][i]
+    creatures[name]['effects'] = [eff for eff in effects if eff != effect_name]
     return creatures[name]['effects']
 
 

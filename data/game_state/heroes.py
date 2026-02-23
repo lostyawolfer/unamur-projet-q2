@@ -21,7 +21,6 @@ heroes = {
 }
 """
 from math import ceil
-from copy import deepcopy
 from .hero_classes import stats as hcls_stats, get_abilities as hcls_get_ab
 from .hero_classes import class_exists
 from .general import game_rules, is_legal_position
@@ -32,16 +31,18 @@ heroes = {
     'player_2': {}
 }
 
-_HERO_TEMPLATE = {
-    'class': '',
-    'level': 0,
-    'max_health': 0,
-    'health': 0,
-    'damage': 0,
-    'position': (0, 0),
-    'turns_on_spur': 0,
-    'effects': []
-}
+
+def _get_hero_template():
+    return {
+        'class': '',
+        'level': 0,
+        'max_health': 0,
+        'health': 0,
+        'damage': 0,
+        'position': (0, 0),
+        'turns_on_spur': 0,
+        'effects': []
+    }
 
 
 def create(player: str, name: str, hcls: str):
@@ -77,7 +78,7 @@ def create(player: str, name: str, hcls: str):
 
     spawn_pos = game_rules['spawn'][player]
 
-    new_hero = deepcopy(_HERO_TEMPLATE)
+    new_hero = _get_hero_template()
     new_hero['class'] = hcls
     new_hero['level'] = 1
     new_hero['max_health'] = hcls_stats[hcls]['health']

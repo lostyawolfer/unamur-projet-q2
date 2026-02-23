@@ -183,25 +183,6 @@ def get_effects(name: str) -> list[str]:
 # --------------------
 
 
-def _die(name: str):
-    """
-    INTERNAL FUNCTION THAT ISN'T SUPPOSED TO BE IMPORTED ANYWHERE,
-    AND IS INSTEAD ONLY USED IN THIS FILE.
-
-    Processes the creature's death, if upon hurting it its health becomes 0.
-    Currently, only deletes its data from the creatures dictionary.
-
-    !!! Might not be needed or become an importable function
-    !!! in the future, since it's supposed to only be cleaned up
-    !!! in a different phase after damage is inflicted, not immediately.
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
-    """
-    creatures.pop(name)
-
-
 def hurt(name: str, amount: int) -> int:
     """
     Damages the creature by a specified amount.
@@ -228,9 +209,8 @@ def hurt(name: str, amount: int) -> int:
     if amount < 0: raise ValueError('cannot inflict negative damage')
     new_health = max(0, creatures[name]['health'] - amount)
     creatures[name]['health'] = new_health
-    if new_health <= 0:
-        _die(name)
-    return creatures[name]["health"]
+    return new_health
+
 
 def apply_effect(name: str, effect_name: str) -> list[str]:
     """
@@ -260,7 +240,7 @@ def remove_effect(name: str, effect_name: str) -> list[str]:
     # TODO: write specs
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     if effect_name not in creatures[name]['effects']: raise ValueError(f"creature {name} doesn't have {effect_name}")
-    creatures[name]['effects'].remove(effect_name)
+    creatures[name]['effects'].remove(effect_name) # TODO: get rid of .remove
     return creatures[name]['effects']
 
 
@@ -274,11 +254,11 @@ def reset_effects(name: str):
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+    ValueError: creature doesn't exist - if creature name is invalid
 
     Version
     -------
-    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    specification: VOLKOV Kostiantyn (v. 2, 20 fév. 2026)
     """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
     creatures[name]['effects'] = []

@@ -20,6 +20,8 @@ heroes = {
     }
 }
 """
+# TODO: figure out ability cooldowns
+
 from math import ceil
 from .hero_classes import stats as hcls_stats, get_abilities as hcls_get_ab
 from .hero_classes import class_exists
@@ -135,7 +137,7 @@ def _verify_hero(hero: str, player: str = None) -> str:
     -------
     specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
-    if not player:
+    if player is None:
         player = get_player(hero)
         if not player: raise ValueError(f'hero {hero} doesn\'t exist')
     if not player in heroes: raise ValueError(f'player {player} doesn\'t exist')
@@ -358,8 +360,9 @@ def get_owned_abilities(hero: str, player: str = None) -> list[str]:
     player = _verify_hero(hero, player=player)
     hcls = get_class(hero, player=player)
     hlvl = get_level(hero, player=player)
+    ability_count = max(0, hlvl-1)
     hcls_abilities = hcls_get_ab(hcls)
-    return hcls_abilities[:hlvl-1]
+    return hcls_abilities[:ability_count]
 
 
 def get_effects(hero: str, player: str = None) -> list[str]:
@@ -466,25 +469,6 @@ def respawn(hero: str, player: str = None):
     heroes[player][hero]['health'] = heroes[player][hero]['max_health']
 
 
-def _die(hero: str, player: str = None):
-    """
-    INTERNAL FUNCTION THAT ISN'T SUPPOSED TO BE IMPORTED ANYWHERE,
-    AND IS INSTEAD ONLY USED IN THIS FILE.
-
-    Processes the hero's death, if upon hurting it its health becomes 0.
-    Currently, literally does nothing.
-
-    !!! Might not be needed or become an importable function
-    !!! in the future, since it's supposed to only be cleaned up
-    !!! in a different phase after damage is inflicted, not immediately.
-
-    Version
-    -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
-    """
-    ...
-
-
 def hurt(hero: str, amount: int, player: str = None) -> int:
     """
     Damages the hero by a specified amount.
@@ -510,8 +494,6 @@ def hurt(hero: str, amount: int, player: str = None) -> int:
     if amount < 0: raise ValueError('cannot inflict negative damage')
     new_health = max(0, heroes[player][hero]['health'] - amount)
     heroes[player][hero]['health'] = new_health
-    if new_health <= 0:
-        _die(hero, player=player)
     return new_health
 
 
@@ -559,7 +541,7 @@ def apply_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
     Raises
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
-    ValueError: creature already has effect
+    ValueError: player already has effect
 
     Version
     -------
@@ -574,8 +556,8 @@ def apply_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
 def remove_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
     # TODO: write specs
     player = _verify_hero(hero, player=player)
-    if effect_name in heroes[player][hero]['effects']: raise ValueError(f"hero {hero} already has {effect_name}")
-    heroes[player][hero]['effects'].remove(effect_name)
+    if effect_name not in heroes[player][hero]['effects']: raise ValueError(f"hero {hero} doesn't have {effect_name}")
+    heroes[player][hero]['effects'].remove(effect_name) # TODO: get rid of .remove
     return heroes[player][hero]['effects']
 
 
@@ -600,3 +582,16 @@ def reset_effects(hero: str, player: str = None):
     """
     player = _verify_hero(hero, player=player)
     heroes[player][hero]['effects'] = []
+
+
+def increment_turns_on_spur(hero: str, player: str = None) -> int:
+    # TODO: write specs
+    _verify_hero(hero, player=player)
+    heroes[player][hero]['turns_on_spur'] += 1
+    return get_turns_on_spur(hero, player=player)
+
+
+def reset_turns_on_spur(hero: str, player: str = None):
+    # TODO: write specs
+    _verify_hero(hero, player=player)
+    heroes[player][hero]['turns_on_spur'] = 0

@@ -1,3 +1,6 @@
+# guys please look at the structures i wrote in creatures.py and heroes.py
+# i really tried my best at fully showing the entire way the structures look like
+
 game_rules = {
     "map-size": (39, 40),
     "turns-to-win": 25,

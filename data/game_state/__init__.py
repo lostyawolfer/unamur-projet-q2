@@ -19,6 +19,8 @@ the module as `from game_state import *`.
 
 GENERAL FUNCTIONS
 -----------------
+- create_game_rules() is to be used strictly at the start of the game.
+  It creates the game_rules dictionary.
 - get_entities_at() gets you a list of all entities placed at the specified position.
   May be useful to deal damage or apply area effects.
 - get_all_entity_positions() gets you a comprehensive list of all entities on the map.
@@ -30,7 +32,7 @@ GENERAL FUNCTIONS
 - clear_effect() removes a certain effect across all entities.
   May be useful for certain cleanup phases. More granular than reset_all_effects().
 - You may also directly access the data variables of entities using names
-  hero_dict and creature_dict.
+  hero_dict and creature_dict, as well as game_rules.
   NOTE: This is NOT RECOMMENDED and you should instead use related functions inside the respective entity module.
 
 
@@ -41,7 +43,8 @@ CREATURE FUNCTIONS
   is a set of functions the sole purpose of which is to easily get the desired stat.
   Functions exist for health, pos (position), damage, range and effects.
 - creatures.hurt() deals damage to the creature.
-- creatures.apply_effect() adds a new effect to the creature, and creatures.reset_effects() removes all effects from it.
+- creatures.apply_effect() adds a new effect to the creature,
+  and creatures.reset_effects() removes all effects from it.
 
 HERO FUNCTIONS
 --------------
@@ -61,11 +64,14 @@ HERO FUNCTIONS
 - heroes.respawn() resets the hero's health to max health and position to spawn_position of hero's owner.
 - heroes.hurt() deals damage to the hero.
 - heroes.heal() heals the hero (maxes out at max_health).
-- heroes.apply_effect() adds a new effect to the hero, and heroes.reset_effects() removes all effects from them.
+- heroes.apply_effect() adds a new effect to the hero,
+  and heroes.reset_effects() removes all effects from them.
+- heroes.increment_turns_on_spur() adds 1 to turns on spur of the hero, and
+  heroes.reset_turns_on_spur() sets it to 0.
 """
 
 
-from copy import deepcopy
+from copy import deepcopy # TODO: get rid of deepcopy
 from . import creatures
 from . import heroes
 from . import hero_classes
@@ -154,7 +160,7 @@ def reset_all_effects():
 def clear_effect(effect: str):
     # TODO: write specs
     for creature in creature_dict:
-        creatures.remove_effect(creature, effect)
+        if effect in creatures.get_effects(creature): creatures.remove_effect(creature, effect)
     for player in hero_dict:
         for hero in hero_dict[player]:
-            heroes.remove_effect(hero, effect, player=player)
+            if effect in heroes.get_effects(hero, player=player): heroes.remove_effect(hero, effect, player=player)

@@ -1,17 +1,29 @@
+_rules_init: bool = False
+
 game_rules = {
-    "map-size": (39, 40),
-    "turns-to-win": 25,
+    "map_size": (0, 0),
+    "turns_to_win": 0,
     "spawn": {
-        "player_1": (20, 3),
-        "player_2": (20, 38)
+        "player_1": (0, 0),
+        "player_2": (0, 0)
     },
-    "spur": [
-        (20, 38),
-        (20, 39),
-        (21, 38),
-        (21, 39)
-    ]
+    "spur": []
 }
+
+
+def create_game_rules(map_size: tuple[int, int], win_condition: int,
+                      spawn_player_1: tuple[int, int], spawn_player_2: tuple[int, int],
+                      spur: list[tuple[int, int]]):
+    # TODO: write specs
+    global _rules_init
+    if _rules_init: raise Exception('Rules have already been set up before!')
+    game_rules["map_size"] = map_size
+    game_rules['turns_to_win'] = win_condition
+    game_rules['spawn']['player_1'] = spawn_player_1
+    game_rules['spawn']['player_2'] = spawn_player_2
+    game_rules['spur'] = spur
+    _rules_init = True
+
 
 def is_legal_position(pos: tuple[int, int]) -> bool:
     """

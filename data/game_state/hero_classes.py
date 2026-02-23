@@ -7,7 +7,7 @@ stats = {
     barbarian: {
         'health': 15,
         'damage': 2,
-        'abilities': ['energize', 'stun']
+        'abilities': ['energise', 'stun']
     },
     healer: {
         'health': 10,

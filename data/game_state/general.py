@@ -41,6 +41,6 @@ def is_legal_position(pos: tuple[int, int]) -> bool:
     -------
     specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
-    if not 1 <= pos[0] <= game_rules["map-size"][0]: return False
-    if not 1 <= pos[1] <= game_rules["map-size"][1]: return False
+    if not 1 <= pos[0] <= game_rules["map_size"][0]: return False
+    if not 1 <= pos[1] <= game_rules["map_size"][1]: return False
     return True

@@ -16,7 +16,7 @@ Each player's heroes start in their respective spawn points, with some monsters 
 
 ## Setting up
 The .lon file must end with a blank line. The module **blessed** starts at the coordinate (0, 0). Thus we consider the first line as the 0th line. Same for columns.
-*todo: document how the .lon file works
+*todo: document how the .lon file works*
 
 
 ## Credits

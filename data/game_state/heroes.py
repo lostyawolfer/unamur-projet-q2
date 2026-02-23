@@ -9,7 +9,9 @@ heroes = {
             "max_health": **int, max health**,
             "health": **int, health**,
             "damage": **int, physical damage**,
-            "position": (**int, X**, **int, Y**)
+            "position": (**int, X**, **int, Y**),
+            "turns_on_spur": **int**,
+            "effects": **list[str]**
         },
         ... (4 heroes total)
     },
@@ -19,6 +21,7 @@ heroes = {
 }
 """
 from math import ceil
+from copy import deepcopy
 from .hero_classes import stats as hcls_stats, get_abilities as hcls_get_ab
 from .hero_classes import class_exists
 from .general import game_rules, is_legal_position
@@ -35,7 +38,9 @@ _HERO_TEMPLATE = {
     'max_health': 0,
     'health': 0,
     'damage': 0,
-    'position': (0, 0)
+    'position': (0, 0),
+    'turns_on_spur': 0,
+    'effects': []
 }
 
 
@@ -72,13 +77,15 @@ def create(player: str, name: str, hcls: str):
 
     spawn_pos = game_rules['spawn'][player]
 
-    new_hero = _HERO_TEMPLATE.copy()
+    new_hero = deepcopy(_HERO_TEMPLATE)
     new_hero['class'] = hcls
     new_hero['level'] = 1
     new_hero['max_health'] = hcls_stats[hcls]['health']
     new_hero['health'] = new_hero['max_health']
     new_hero['damage'] = hcls_stats[hcls]['damage']
     new_hero['position'] = spawn_pos
+    new_hero['turns_on_spur'] = 0
+    new_hero['effects'] = []
 
     heroes[player][name] = new_hero
 
@@ -270,6 +277,33 @@ def get_damage(hero: str, player: str = None) -> int:
     return heroes[player][hero]['damage']
 
 
+def get_turns_on_spur(hero: str, player: str = None) -> int:
+    """
+    Gets the turns on spur stat of the hero.
+
+    Parameters
+    ----------
+    hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
+
+    Returns
+    -------
+    int - the amount of turns the hero spent on the spur zone
+
+    Raises
+    ------
+    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    """
+    player = _verify_hero(hero, player=player)
+    return heroes[player][hero]['turns_on_spur']
+
+
 def get_pos(hero: str, player: str = None) -> tuple[int, int]:
     """
     Gets the current position of the specified hero.
@@ -310,7 +344,7 @@ def get_owned_abilities(hero: str, player: str = None) -> tuple:
 
     Returns
     -------
-    tuple (empty tuple OR tuple[str] OR tuple[str, str]) - list of available abilities for the hero
+    tuple (() OR tuple[str] OR tuple[str, str]) - list of available abilities for the hero
 
     Raises
     ------
@@ -332,6 +366,24 @@ def get_owned_abilities(hero: str, player: str = None) -> tuple:
         return hcls_abilities
 
 
+def get_effects(hero: str, player: str = None) -> list[str]:
+    """
+    Gets the list of all effects that currently affect the hero.
+
+    Returns
+    -------
+    list[str] - list of names of effects the hero has
+
+    Raises
+    ------
+    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    """
+    player = _verify_hero(hero, player=player)
+    return heroes[player][hero]['effects']
 
 
 # --------------------
@@ -494,3 +546,51 @@ def heal(hero: str, amount: int, player: str = None) -> int:
     new_health = min(heroes[player][hero]['health'] + amount, max_health)
     heroes[player][hero]['health'] = new_health
     return new_health
+
+
+def apply_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
+    """
+    Adds the specified effect to the effect list of the hero.
+
+    Parameters
+    ----------
+    hero: str - name of the hero
+    effect_name: str - name of the effect to apply
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
+
+    Raises
+    ------
+    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    """
+    player = _verify_hero(hero, player=player)
+    heroes[player][hero]['effects'] += effect_name
+    return heroes[player][hero]['effects']
+
+
+def reset_effects(hero: str, player: str = None):
+    """
+    Resets the effect list of the hero.
+
+    Parameters
+    ----------
+    hero: str - name of the hero
+    player: str = None - name of the player that owns the hero
+        (if None, finds the owning player automatically;
+        if str, only works if specified hero is owned by the player)
+
+    Raises
+    ------
+    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+
+    Version
+    -------
+    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    """
+    player = _verify_hero(hero, player=player)
+    heroes[player][hero]['effects'] = []

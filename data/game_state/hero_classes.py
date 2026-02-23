@@ -7,22 +7,22 @@ stats = {
     barbarian: {
         'health': 15,
         'damage': 2,
-        'abilities': ('energize', 'stun')
+        'abilities': ['energize', 'stun']
     },
     healer: {
         'health': 10,
         'damage': 2,
-        'abilities': ('invigorate', 'immunise')
+        'abilities': ['invigorate', 'immunise']
     },
     mage: {
         'health': 10,
         'damage': 2,
-        'abilities': ('fulgura', 'ovibus')
+        'abilities': ['fulgura', 'ovibus']
     },
     rogue: {
         'health': 10,
         'damage': 3,
-        'abilities': ('reach', 'burst')
+        'abilities': ['reach', 'burst']
     }
 }
 
@@ -48,7 +48,7 @@ def class_exists(hcls: str) -> bool:
     return True
 
 
-def get_abilities(hcls: str) -> tuple[str, str]:
+def get_abilities(hcls: str) -> list[str]:
     """
     Gets the ability list of a given haro class.
 
@@ -58,7 +58,7 @@ def get_abilities(hcls: str) -> tuple[str, str]:
 
     Returns
     -------
-    tuple[str, str] - full list of abilities for the class
+    list[str] - full list of abilities for the class
 
     Raises
     ------

@@ -243,14 +243,24 @@ def apply_effect(name: str, effect_name: str) -> list[str]:
 
     Raises
     ------
-    ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+    ValueError: creature doesn't exist - if creature name is invalid
+    ValueError: creature already has effect
 
     Version
     -------
-    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    specification: VOLKOV Kostiantyn (v. 2, 23 fév. 2026)
     """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
+    if effect_name in creatures[name]['effects']: raise ValueError(f"creature {name} already has {effect_name}")
     creatures[name]['effects'].append(effect_name)
+    return creatures[name]['effects']
+
+
+def remove_effect(name: str, effect_name: str) -> list[str]:
+    # TODO: write specs
+    if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
+    if effect_name not in creatures[name]['effects']: raise ValueError(f"creature {name} doesn't have {effect_name}")
+    creatures[name]['effects'].remove(effect_name)
     return creatures[name]['effects']
 
 

@@ -332,7 +332,7 @@ def get_pos(hero: str, player: str = None) -> tuple[int, int]:
     return heroes[player][hero]['position']
 
 
-def get_owned_abilities(hero: str, player: str = None) -> tuple:
+def get_owned_abilities(hero: str, player: str = None) -> list[str]:
     """
     Gets the list of abilities available to use by the hero.
 
@@ -345,7 +345,7 @@ def get_owned_abilities(hero: str, player: str = None) -> tuple:
 
     Returns
     -------
-    tuple (() OR tuple[str] OR tuple[str, str]) - list of available abilities for the hero
+    list[str] - list of available abilities for the hero
 
     Raises
     ------
@@ -353,18 +353,13 @@ def get_owned_abilities(hero: str, player: str = None) -> tuple:
 
     Version
     -------
-    specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
+    specification: VOLKOV Kostiantyn (v. 2, 23 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
     hcls = get_class(hero, player=player)
     hlvl = get_level(hero, player=player)
     hcls_abilities = hcls_get_ab(hcls)
-    if hlvl == 1:
-        return ()
-    elif hlvl == 2:
-        return (hcls_abilities[0],)
-    else:
-        return hcls_abilities
+    return hcls_abilities[:hlvl-1]
 
 
 def get_effects(hero: str, player: str = None) -> list[str]:
@@ -564,13 +559,23 @@ def apply_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
     Raises
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
+    ValueError: creature already has effect
 
     Version
     -------
-    specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
+    specification: VOLKOV Kostiantyn (v. 2, 24 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
+    if effect_name in heroes[player][hero]['effects']: raise ValueError(f"hero {hero} already has {effect_name}")
     heroes[player][hero]['effects'].append(effect_name)
+    return heroes[player][hero]['effects']
+
+
+def remove_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
+    # TODO: write specs
+    player = _verify_hero(hero, player=player)
+    if effect_name in heroes[player][hero]['effects']: raise ValueError(f"hero {hero} already has {effect_name}")
+    heroes[player][hero]['effects'].remove(effect_name)
     return heroes[player][hero]['effects']
 
 

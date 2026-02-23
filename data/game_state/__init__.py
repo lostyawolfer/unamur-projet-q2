@@ -25,6 +25,10 @@ GENERAL FUNCTIONS
   May be useful for game board rendering.
 - is_legal_position() verifies if the position is inside the map or not.
   May be useful for verifying movement or attack destinations.
+- reset_all_effects() resets ALL effects across all entities.
+  May be useful for code responsible for ending turns to make sure nothing carries over.
+- clear_effect() removes a certain effect across all entities.
+  May be useful for certain cleanup phases. More granular than reset_all_effects().
 - You may also directly access the data variables of entities using names
   hero_dict and creature_dict.
   NOTE: This is NOT RECOMMENDED and you should instead use related functions inside the respective entity module.
@@ -137,4 +141,20 @@ def get_all_entity_positions() -> dict:
 
     return res
 
-# TODO: function that cleans up all effects from all entities
+
+def reset_all_effects():
+    # TODO: write specs
+    for creature in creature_dict:
+        creatures.reset_effects(creature)
+    for player in hero_dict:
+        for hero in hero_dict[player]:
+            heroes.reset_effects(hero, player=player)
+
+
+def clear_effect(effect: str):
+    # TODO: write specs
+    for creature in creature_dict:
+        creatures.remove_effect(creature, effect)
+    for player in hero_dict:
+        for hero in hero_dict[player]:
+            heroes.remove_effect(hero, effect, player=player)

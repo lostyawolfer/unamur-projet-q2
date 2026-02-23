@@ -1,3 +1,5 @@
+<img width="945" height="272" alt="image" src="https://github.com/user-attachments/assets/211f89f1-1005-4a0f-a59d-2519f61be51e" />
+
 # League of Namur
 A turn-based strategy for 2 players, played perfectly in a terminal!
 

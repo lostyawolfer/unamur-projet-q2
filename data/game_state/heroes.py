@@ -569,7 +569,7 @@ def apply_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
     specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
     """
     player = _verify_hero(hero, player=player)
-    heroes[player][hero]['effects'] += effect_name
+    heroes[player][hero]['effects'].append(effect_name)
     return heroes[player][hero]['effects']
 
 

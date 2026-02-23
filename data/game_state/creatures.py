@@ -250,7 +250,7 @@ def apply_effect(name: str, effect_name: str) -> list[str]:
     specification: VOLKOV Kostiantyn (v. 1, 20 fév. 2026)
     """
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
-    creatures[name]['effects'] += effect_name
+    creatures[name]['effects'].append(effect_name)
     return creatures[name]['effects']
 
 

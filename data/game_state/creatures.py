@@ -7,7 +7,7 @@ creatures = {
         "health": **int, health**,
         "damage": **int, physical damage**,
         "range": **int, creature's range**,
-        "effects" **list[str]**
+        "effects": **list[str]**
     },
     ... (for all creatures)
 }

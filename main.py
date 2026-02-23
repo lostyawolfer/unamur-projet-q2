@@ -43,7 +43,7 @@ def clean_raw_board_data(raw_data):
 
     Return:
     -------
-    gamerules: Data structure that countains informations about the game, e.g. map-size, turns-to-win, etc. (dict)
+    gamerules: Data structure that countains informations about the game, e.g. map_size, turns_to_win, etc. (dict)
     creatures: Data structure that countains informations about the creatures, e.g. name, damage, etc. (dict)
 
     Version:
@@ -61,8 +61,8 @@ def clean_raw_board_data(raw_data):
 
         if section_name == "map":
             map_data = section_data[0]
-            game_rules["map-size"] = (int(map_data[0]), int(map_data[1]))
-            game_rules["turns-to-win"] = int(map_data[2])
+            game_rules["map_size"] = (int(map_data[0]), int(map_data[1]))
+            game_rules["turns_to_win"] = int(map_data[2])
 
         elif section_name == "spawn":
             spawn_1 = (int(section_data[0][0]), int(section_data[0][1]))
@@ -81,7 +81,8 @@ def clean_raw_board_data(raw_data):
                 creatures[creature_data[0]] = {"position": (int(creature_data[1]), int(creature_data[2])),
                                                "health": int(creature_data[3]),
                                                "damage": int(creature_data[4]),
-                                               "range": int(creature_data[5])}
+                                               "range": int(creature_data[5]),
+                                               "effects": []}
 
     return game_rules, creatures
 
@@ -92,7 +93,7 @@ def display_board(creature, game_rules):
     Parameters:
     -----------
     creatures: Data structure that countains informations about the creatures, e.g. name, damage, etc. (dict)
-    gamerules: Data structure that countains informations about the game, e.g. map-size, turns-to-win, etc. (dict)
+    gamerules: Data structure that countains informations about the game, e.g. map_size, turns_to_win, etc. (dict)
 
     Version:
     --------
@@ -102,8 +103,8 @@ def display_board(creature, game_rules):
     print(term.home + term.clear, end="")
 
     # Empty map
-    for line in range(game_rules["map-size"][0]):
-        for column in range(game_rules["map-size"][1]):
+    for line in range(game_rules["map_size"][0]):
+        for column in range(game_rules["map_size"][1]):
             if (line + column) % 2 == 0:
                 print(term.on_color_rgb(BACK_1[0], BACK_1[1], BACK_1[2])(" "), end="")    # Can we use the unpacking operator? If yes, `BACK_1[0], BACK_1[1], BACK_1[2]` becomes `*BACK_1`.
             else:
@@ -148,7 +149,7 @@ def display_board(creature, game_rules):
     # ...
     
     # Relocate cursor below
-    map_size = game_rules["map-size"]
+    map_size = game_rules["map_size"]
     print(term.move_y(map_size[0]))      # TO DO: Add lines to compensate "Heroes health & effects"
 
 
@@ -197,8 +198,11 @@ if __name__ == "__main__":
     game_rules, creatures = clean_raw_board_data(raw_data)
 
     # FOR TESTING PURPOSES (to delete later):
-    heroes = {"player_1": {"Zet-Li":{"class":"healer", "prev_position": [8, 15], "position":[7, 15], "health":10, "max_health":10, "damage":3, "level":1}, "turns_on_goal":0},
-              "player_2": {"Nev":{"class":"mage", "prev_position": [8, 20], "position":[7, 20], "health":10, "max_health":10, "damage":3, "level":1}, "turns_on_goal":0}}
+    heroes = {"player_1": {"Zet-Li":{"class":"healer", "prev_position": [8, 15], "position":[7, 15], "health":10, "max_health":10, "damage":3, "level":1, "effects":[]}, "turns_on_spur":0},
+              "player_2": {"Nev":{"class":"mage", "prev_position": [8, 20], "position":[7, 20], "health":10, "max_health":10, "damage":3, "level":1, "effects":[]}, "turns_on_spur":0}}
 
     display_board(creatures, game_rules)
     update_render(heroes)
+
+    print(f"game_rules = {game_rules}")
+    print(f"\ncreatures = {creatures}")

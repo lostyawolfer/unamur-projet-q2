@@ -36,6 +36,9 @@ raises(heroes.create, 'player_2', 'findya', 'mage') # existing hero
 raises(heroes.create, 'player_2', 'lostya', 'mage') # existing hero from other player
 raises(heroes.create, 'player_2', 'coolguy123', 'mage') # numbers in name
 raises(heroes.create, 'player_2', 'coolguy', 'verynicenonexistentclass') # bad class
+heroes.create('player_2', 'testinghero', 'rogue')
+heroes.create('player_2', 'testingherotwice', 'rogue')
+raises(heroes.create,'player_2', 'testingherothrice', 'rogue') # more than 4 heroes per player
 
 
 print()

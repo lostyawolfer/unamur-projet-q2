@@ -24,6 +24,7 @@ heroes = {
     "player_1": {
         "hero_1": {
             "class": "mage",
+            "prev_position": [14, 10],
             "position": [15, 10],
             "health": 10,
             "max_health":10,

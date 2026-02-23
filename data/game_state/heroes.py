@@ -556,8 +556,13 @@ def apply_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
 def remove_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
     # TODO: write specs
     player = _verify_hero(hero, player=player)
-    if effect_name not in heroes[player][hero]['effects']: raise ValueError(f"hero {hero} doesn't have {effect_name}")
-    heroes[player][hero]['effects'].remove(effect_name) # TODO: get rid of .remove
+
+    effects = heroes[player][hero]['effects']
+    if effect_name not in effects: raise ValueError(f"hero {hero} doesn't have {effect_name}")
+
+    for effect, i in effects, range(len(effects)):
+        if effect == effect_name:
+            del heroes[player][hero]['effects'][i]
     return heroes[player][hero]['effects']
 
 

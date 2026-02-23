@@ -239,8 +239,13 @@ def apply_effect(name: str, effect_name: str) -> list[str]:
 def remove_effect(name: str, effect_name: str) -> list[str]:
     # TODO: write specs
     if name not in creatures: raise ValueError(f"creature {name} doesn't exist")
-    if effect_name not in creatures[name]['effects']: raise ValueError(f"creature {name} doesn't have {effect_name}")
-    creatures[name]['effects'].remove(effect_name) # TODO: get rid of .remove
+
+    effects = creatures[name]['effects']
+    if effect_name not in effects: raise ValueError(f"creature {name} doesn't have {effect_name}")
+
+    for effect, i in effects, range(len(effects)):
+        if effect == effect_name:
+            del creatures[name]['effects'][i]
     return creatures[name]['effects']
 
 

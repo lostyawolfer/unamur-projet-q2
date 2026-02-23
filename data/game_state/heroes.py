@@ -537,7 +537,7 @@ def apply_effect(hero: str, effect_name: str, player: str = None) -> list[str]:
     Raises
     ------
     ValueError: player doesn't have the hero - if no hero of that name owned by specified player found
-    ValueError: player already has effect
+    ValueError: hero already has effect
 
     Version
     -------

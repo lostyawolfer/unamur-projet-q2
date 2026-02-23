@@ -11,15 +11,13 @@ from data.game_state import *
 
 def raises(func, *args, **kwargs):
     flag = False
-    ret = None
     try:
-        ret = func(*args, **kwargs)
+        func(*args, **kwargs)
     except Exception as e:
         print(f'  * <{func.__module__}.{func.__name__}> raised "{e}" (expected)')
         flag = True
         pass
     assert flag, 'expected raise, function passed'
-    return ret
 
 
 print()

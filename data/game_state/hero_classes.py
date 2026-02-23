@@ -45,7 +45,7 @@ def class_exists(hcls: str) -> bool:
 
 def get_abilities(hcls: str) -> list[str]:
     """
-    Gets the ability list of a given haro class.
+    Gets the ability list of a given hero class.
 
     Parameters
     ----------

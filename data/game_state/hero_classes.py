@@ -1,25 +1,20 @@
-barbarian = 'barbarian'
-healer = 'healer'
-mage = 'mage'
-rogue = 'rogue'
-
-stats = {
-    barbarian: {
+STATS = {
+    'barbarian': {
         'health': 15,
         'damage': 2,
         'abilities': ['energise', 'stun']
     },
-    healer: {
+    'healer': {
         'health': 10,
         'damage': 2,
         'abilities': ['invigorate', 'immunise']
     },
-    mage: {
+    'mage': {
         'health': 10,
         'damage': 2,
         'abilities': ['fulgura', 'ovibus']
     },
-    rogue: {
+    'rogue': {
         'health': 10,
         'damage': 3,
         'abilities': ['reach', 'burst']
@@ -42,7 +37,7 @@ def class_exists(hcls: str) -> bool:
     -------
     specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
-    class_list = (barbarian, healer, mage, rogue)
+    class_list = ('barbarian', 'healer', 'mage', 'rogue')
     if not hcls in class_list:
         return False
     return True
@@ -69,4 +64,4 @@ def get_abilities(hcls: str) -> list[str]:
     specification: VOLKOV Kostiantyn (v. 1, 19 fév. 2026)
     """
     if not class_exists(hcls): raise ValueError(f"class {hcls} doesn't exist")
-    return stats[hcls]['abilities']
+    return STATS[hcls]['abilities']

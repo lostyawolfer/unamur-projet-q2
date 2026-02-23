@@ -24,7 +24,7 @@ heroes = {
 
 
 from math import ceil
-from .hero_classes import stats as hcls_stats, get_abilities as hcls_get_ab
+from .hero_classes import STATS as hcls_stats, get_abilities as hcls_get_ab
 from .hero_classes import class_exists
 from .general import is_legal_position
 from .data import game_rules, heroes

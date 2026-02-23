@@ -203,6 +203,3 @@ if __name__ == "__main__":
 
     display_board(creatures, game_rules)
     update_render(heroes)
-
-    print(f"game_rules = {game_rules}")
-    print(f"\ncreatures = {creatures}")

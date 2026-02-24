@@ -163,6 +163,9 @@ assert 'ovibus' not in heroes.get_effects('findya')
 print(get_all_entity_positions())
 print(get_entities_at((2, 2)))
 print(get_entities_at((8, 8)))
+empty_list = get_entities_at((10, 10))
+print(empty_list)
+assert empty_list == {"creatures": {}, "heroes": {"player_1": {}, "player_2": {}}}
 
 print()
 print('gg')

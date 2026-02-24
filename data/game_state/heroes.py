@@ -24,7 +24,7 @@ heroes = {
 
 
 from math import ceil
-from .hero_classes import STATS as hcls_stats, get_abilities as hcls_get_ab
+from .hero_classes import STATS as HCLS_STATS, get_abilities as hcls_get_ab
 from .hero_classes import class_exists
 from .general import is_legal_position
 from .data import game_rules, heroes
@@ -79,9 +79,9 @@ def create(player: str, name: str, hcls: str):
     new_hero = _get_hero_template()
     new_hero['class'] = hcls
     new_hero['level'] = 1
-    new_hero['max_health'] = hcls_stats[hcls]['health']
+    new_hero['max_health'] = HCLS_STATS[hcls]['health']
     new_hero['health'] = new_hero['max_health']
-    new_hero['damage'] = hcls_stats[hcls]['damage']
+    new_hero['damage'] = HCLS_STATS[hcls]['damage']
     new_hero['position'] = spawn_pos
     new_hero['turns_on_spur'] = 0
     new_hero['effects'] = []
@@ -135,8 +135,8 @@ def _verify_hero(hero: str, player: str = None) -> str:
     """
     if player is None:
         player = get_player(hero)
-        if not player: raise ValueError(f'hero {hero} doesn\'t exist')
-    if not player in heroes: raise ValueError(f'player {player} doesn\'t exist')
+        if not player: raise ValueError(f"hero {hero} doesn't exist")
+    if not player in heroes: raise ValueError(f"player {player} doesn't exist")
     if hero not in heroes[player]: raise ValueError(f"player {player} doesn't own a hero called {hero}")
     return player
 

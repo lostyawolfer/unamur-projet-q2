@@ -56,7 +56,7 @@ def create(player: str, name: str, hcls: str):
 
     Raises
     ------
-    ValueError: player already has 4 or more heroes - players mustn't have any more heros than 4
+    ValueError: player already has 4 or more heroes - players mustn't have any more heroes than 4
     ValueError: hero already exists - if a hero with the same name already exists in any of the players
     ValueError: hero names can only contain letters - if the name contains numbers, spaces or special characters
     ValueError: hero names are only lowercase - if the name contains uppercase letters

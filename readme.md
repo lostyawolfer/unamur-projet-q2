@@ -1,3 +1,7 @@
+# ARCHIVED BECAUSE WE MOVED TO PRIVATE UNIVERSITY-OWNED REPOSITORY
+will be unarchived and updated when the final project version will be given for evaluation
+
+
 <img width="945" height="272" alt="image" src="https://github.com/user-attachments/assets/211f89f1-1005-4a0f-a59d-2519f61be51e" />
 
 # League of Namur
